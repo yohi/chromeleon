@@ -8,7 +8,7 @@
 
 **Tech Stack:** C++20, Chromium M135 (GN + Ninja), Mojo IPC, Python 3.12 (ビルドスクリプト), GitHub Actions CI
 
-**Design Spec:** [2026-04-21-chromium-multisession-fork-design.md](file:///home/y_ohi/program/private/20260421/docs/superpowers/specs/2026-04-21-chromium-multisession-fork-design.md)
+**Design Spec:** [2026-04-21-chromium-multisession-fork-design.md](../specs/2026-04-21-chromium-multisession-fork-design.md)
 
 ---
 
@@ -86,8 +86,8 @@ jobs:
 
       - name: clang-format check (overlay)
         run: |
-          find chromium_src/overlay -name '*.cc' -o -name '*.h' |
-            xargs clang-format-15 --dry-run --Werror
+          find chromium_src/overlay \( -name '*.cc' -o -name '*.h' \) -print0 |
+            xargs -0 --no-run-if-empty clang-format-15 --dry-run --Werror
 
       - name: Patch dry-run
         run: python3 build/ci_patch_dryrun.py
