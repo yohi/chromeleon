@@ -22,7 +22,7 @@
 
 ### 1.1 コンポーネント図
 
-```
+```text
 ┌───────────────────────────────────────────────────────────────────┐
 │  Browser Process                                                   │
 │                                                                    │
@@ -80,7 +80,7 @@
 
 **フロー1: 「このリンクを5セッションで開く」**
 
-```
+```text
 ユーザがリンク右クリック
   → RenderViewContextMenu::AppendLinkItems (patched) が MULTI_SESSION 項目追加
   → ユーザ選択 → MultiSessionOpenDialog::Show(link_url)
@@ -96,7 +96,7 @@
 
 **フロー2: Canvas readback のフィンガープリント加工**
 
-```
+```text
 JS: canvas.toDataURL()
   → Blink Renderer Main Thread: CanvasRenderingContext2D::toDataURL
   → [hook] FingerprintNoiseSource::ApplyCanvasNoise(image_data)
@@ -148,7 +148,7 @@ JS: canvas.toDataURL()
 
 ### 3.1 ディレクトリ構造
 
-```
+```text
 / (project root, git repo "custom-chromium")
 ├── .devcontainer/
 │   ├── devcontainer.json
@@ -195,6 +195,13 @@ JS: canvas.toDataURL()
 {
   "name": "custom-chromium-dev",
   "build": { "dockerfile": "Dockerfile" },
+  // runArgs 要件の根拠:
+  //   --cap-add=SYS_PTRACE       : renderer/gpu 子プロセスへの gdb/lldb アタッチに必要
+  //   --security-opt seccomp=... : Chromium が自前の seccomp サンドボックスを初期化する際、
+  //                                ホスト既定の seccomp プロファイルと衝突するため
+  //   --shm-size=2g              : Chromium の共有メモリ (/dev/shm) 使用量に対応
+  // これらは Chromium 開発用コンテナの機能要件であり、オプトインにすると
+  // ブラウザが起動しないため常時有効化する。
   "runArgs": [
     "--cap-add=SYS_PTRACE",
     "--security-opt", "seccomp=unconfined",
@@ -357,6 +364,7 @@ for patch_name in SERIES:
 #ifndef CHROMIUM_SRC_OVERLAY_CHROME_BROWSER_MULTI_SESSION_EPHEMERAL_SESSION_MANAGER_H_
 #define CHROMIUM_SRC_OVERLAY_CHROME_BROWSER_MULTI_SESSION_EPHEMERAL_SESSION_MANAGER_H_
 
+#include <optional>
 #include <string>
 #include <unordered_map>
 
@@ -400,7 +408,10 @@ class EphemeralSessionManager : public KeyedService {
 
   // 呼出側は任意の StoragePartition* から GetConfig() を取得して渡す。
   // StoragePartition 本体は本クラスで保持しない（lifetime安全性のため）。
-  uint64_t GetSeedForPartitionConfig(
+  // 非エフェメラル（既定 Profile 等）パーティションは登録されていないため
+  // std::nullopt を返す。seed == 0 は正規の乱数値として有効なので、
+  // sentinel ではなく std::optional で「未登録」を表現する。
+  std::optional<uint64_t> GetSeedForPartitionConfig(
       const content::StoragePartitionConfig& config) const;
 
   void ExpandLinkInSessions(const GURL& link_url, int num_sessions);
@@ -425,6 +436,8 @@ class EphemeralSessionManager : public KeyedService {
 ```
 
 **Factory:**
+
+`EphemeralSessionManagerFactory` は `ProfileSelections::BuildForRegularAndIncognito()` 相当の既定選択を採用し、本ブラウザで Profile 経路を通る全てのコンテキスト（Regular / Incognito / Guest）に対してサービスを生成する。これにより UI thread 上の任意の Profile から `GetForProfile(p) != nullptr` が不変条件として成立する。本不変条件に依存する呼出側（例: `MultiSessionOpenDialog::Accept`、`FingerprintSeedDelivery::RenderFrameCreated`）は `CHECK(mgr)` で契約を自己検証する。
 
 ```cpp
 class EphemeralSessionManagerFactory : public ProfileKeyedServiceFactory {
@@ -464,13 +477,13 @@ SessionHandle EphemeralSessionManager::CreateSessionForNewTab() {
 **`GetSeedForPartitionConfig()` の核ロジック:**
 
 ```cpp
-uint64_t EphemeralSessionManager::GetSeedForPartitionConfig(
+std::optional<uint64_t> EphemeralSessionManager::GetSeedForPartitionConfig(
     const content::StoragePartitionConfig& config) const {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   const auto it = sessions_.find(config.partition_name());
-  if (it == sessions_.end()) return 0;
+  if (it == sessions_.end()) return std::nullopt;
   // partition_name が偶然衝突した場合に備え、config全体で一致確認を行う。
-  if (it->second.config != config) return 0;
+  if (it->second.config != config) return std::nullopt;
   return it->second.seed;
 }
 ```
@@ -494,7 +507,7 @@ void EphemeralSessionManager::ExpandLinkInSessions(const GURL& url, int n) {
 
 **Mojo IDL (`overlay/public/mojom/multi_session/fingerprint.mojom`):**
 
-```
+```mojom
 module blink.mojom;
 
 interface FingerprintSeedReceiver {
@@ -516,17 +529,18 @@ void FingerprintSeedDelivery::RenderFrameCreated(
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   auto* mgr = EphemeralSessionManagerFactory::GetForProfile(
       Profile::FromBrowserContext(rfh->GetBrowserContext()));
-  if (!mgr) return;
+  // Factory 不変条件により全 Profile 種別でサービスが存在する（4.1 参照）。
+  CHECK(mgr);
 
   // StoragePartition 本体ポインタは保持せず、config 値のみを Manager に渡す。
   const content::StoragePartitionConfig& config =
       rfh->GetStoragePartition()->GetConfig();
-  const uint64_t seed = mgr->GetSeedForPartitionConfig(config);
-  if (seed == 0) return;  // 非エフェメラル（既定 Profile）パーティションは対象外
+  const std::optional<uint64_t> seed = mgr->GetSeedForPartitionConfig(config);
+  if (!seed.has_value()) return;  // 非エフェメラル（既定 Profile）は対象外
 
   mojo::AssociatedRemote<blink::mojom::FingerprintSeedReceiver> remote;
   rfh->GetRemoteAssociatedInterfaces()->GetInterface(&remote);
-  remote->SetSeed(seed);
+  remote->SetSeed(*seed);
 }
 ```
 
@@ -672,6 +686,9 @@ bool MultiSessionOpenDialog::Accept() {
   n = std::clamp(n, 1, 20);
   auto* mgr = EphemeralSessionManagerFactory::GetForProfile(
       browser_->profile());
+  // Factory は全 Profile 種別でサービスを生成する（4.1 参照）。
+  // nullptr は不変条件違反なので、ユーザ入力経路で静かに握り潰さず CHECK で止める。
+  CHECK(mgr);
   mgr->ExpandLinkInSessions(link_url_, n);
   return true;
 }
