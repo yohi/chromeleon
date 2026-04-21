@@ -36,7 +36,7 @@
 │    EphemeralSessionManager ───────────────────────────┐            │
 │      - CreateSessionForNewTab()                        │            │
 │      - DestroySessionForTab(wc)                        │            │
-│      - GetSeedForPartition(p)                          │            │
+│      - GetSeedForPartitionConfig(config)               │            │
 │      - ExpandLinkInSessions(url, n)                    │            │
 │         │ owns (1:N)                                   │            │
 │         ▼                                              │ observer   │
@@ -87,7 +87,7 @@
   → "5" 入力 → OK
   → EphemeralSessionManager::ExpandLinkInSessions(url, 5)
       ├─ 5回ループ:
-      │   ├─ CreateSessionForNewTab() → SessionHandle{uuid, seed, partition*}
+      │   ├─ CreateSessionForNewTab() → SessionHandle{uuid, seed, config}
       │   ├─ PartitionExtensionAutoloader::OnPartitionCreated() → 拡張自動ロード
       │   ├─ NavigateParams{storage_partition_config=config, NEW_BACKGROUND_TAB}
       │   └─ Navigate(&params)
@@ -370,10 +370,14 @@ namespace content { class StoragePartition; class WebContents; }
 
 namespace multi_session {
 
+// SessionHandle は StoragePartition 本体ポインタを保持しない。
+// 本体が必要な呼出側は profile_->GetStoragePartition(handle.config) で
+// 都度解決する。これにより BrowserContext 破棄順序や明示的 partition
+// 解放経路での dangling pointer リスクを排除する。
 struct SessionHandle {
-  std::string partition_id;
+  std::string partition_id;  // config.partition_name と等しい
   uint64_t fingerprint_seed;
-  raw_ptr<content::StoragePartition> partition;
+  content::StoragePartitionConfig config;
 };
 
 class EphemeralSessionManager : public KeyedService {
@@ -393,17 +397,24 @@ class EphemeralSessionManager : public KeyedService {
   content::StoragePartitionConfig PartitionConfigFor(
       const SessionHandle& handle) const;
   void DestroySessionForTab(content::WebContents* wc);
-  uint64_t GetSeedForPartition(content::StoragePartition* partition) const;
+
+  // 呼出側は任意の StoragePartition* から GetConfig() を取得して渡す。
+  // StoragePartition 本体は本クラスで保持しない（lifetime安全性のため）。
+  uint64_t GetSeedForPartitionConfig(
+      const content::StoragePartitionConfig& config) const;
+
   void ExpandLinkInSessions(const GURL& link_url, int num_sessions);
 
   void AddObserver(Observer* obs);
   void RemoveObserver(Observer* obs);
 
  private:
+  // Entry は seed のみを保持する。partition 本体は profile_ 経由で都度解決する。
   struct Entry {
     uint64_t seed;
-    raw_ptr<content::StoragePartition> partition;
+    content::StoragePartitionConfig config;
   };
+  // Key: partition_id (= config.partition_name)
   std::unordered_map<std::string, Entry> sessions_;
   raw_ptr<Profile> profile_;
   base::ObserverList<Observer> observers_;
@@ -428,6 +439,8 @@ class EphemeralSessionManagerFactory : public ProfileKeyedServiceFactory {
 
 **`CreateSessionForNewTab()` の核ロジック:**
 
+`GetStoragePartition()` は副作用としてパーティション実体を生成するために1回だけ呼び、戻り値のポインタは保存しない。以降 partition 本体が必要な箇所は `profile_->GetStoragePartition(handle.config)` で都度解決する（cached lookup なのでコストは小）。
+
 ```cpp
 SessionHandle EphemeralSessionManager::CreateSessionForNewTab() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
@@ -438,13 +451,27 @@ SessionHandle EphemeralSessionManager::CreateSessionForNewTab() {
       profile_, /*partition_domain=*/"multi_session",
       /*partition_name=*/pid, /*in_memory=*/true);
 
-  auto* partition =
-      profile_->GetStoragePartition(config, /*can_create=*/true);
+  // 実体を生成するためだけに呼ぶ。返り値はあえて保持しない。
+  profile_->GetStoragePartition(config, /*can_create=*/true);
 
-  sessions_.emplace(pid, Entry{seed, partition});
-  SessionHandle h{pid, seed, partition};
+  sessions_.emplace(pid, Entry{seed, config});
+  SessionHandle h{pid, seed, config};
   for (auto& obs : observers_) obs.OnPartitionCreated(h);
   return h;
+}
+```
+
+**`GetSeedForPartitionConfig()` の核ロジック:**
+
+```cpp
+uint64_t EphemeralSessionManager::GetSeedForPartitionConfig(
+    const content::StoragePartitionConfig& config) const {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  const auto it = sessions_.find(config.partition_name());
+  if (it == sessions_.end()) return 0;
+  // partition_name が偶然衝突した場合に備え、config全体で一致確認を行う。
+  if (it->second.config != config) return 0;
+  return it->second.seed;
 }
 ```
 
@@ -489,9 +516,13 @@ void FingerprintSeedDelivery::RenderFrameCreated(
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   auto* mgr = EphemeralSessionManagerFactory::GetForProfile(
       Profile::FromBrowserContext(rfh->GetBrowserContext()));
-  const uint64_t seed =
-      mgr ? mgr->GetSeedForPartition(rfh->GetStoragePartition()) : 0;
-  if (seed == 0) return;
+  if (!mgr) return;
+
+  // StoragePartition 本体ポインタは保持せず、config 値のみを Manager に渡す。
+  const content::StoragePartitionConfig& config =
+      rfh->GetStoragePartition()->GetConfig();
+  const uint64_t seed = mgr->GetSeedForPartitionConfig(config);
+  if (seed == 0) return;  // 非エフェメラル（既定 Profile）パーティションは対象外
 
   mojo::AssociatedRemote<blink::mojom::FingerprintSeedReceiver> remote;
   rfh->GetRemoteAssociatedInterfaces()->GetInterface(&remote);
@@ -779,7 +810,7 @@ out/Default/ephemeral_session_manager_unittest
 
 | モジュール | テスト対象 | 使用フェイク |
 |---|---|---|
-| EphemeralSessionManager | セッション生成、ID一意性、破棄、`GetSeedForPartition`、`ExpandLinkInSessions` | `TestingProfile`, `MockBrowserContext` |
+| EphemeralSessionManager | セッション生成、ID一意性、破棄、`GetSeedForPartitionConfig`、`ExpandLinkInSessions` | `TestingProfile`, `MockBrowserContext` |
 | FingerprintNoiseSource | PRNG決定性、同seed同入力→同出力、異seed→差分、`webdriver()`定数 | `V8TestingScope`, `ImageData` fixtures |
 | TabGridView | rows×cols レイアウト、ページング境界、タイルクリック時の `ActivateTabAt` 呼出 | `TestBrowserView`, `TestTabStripModel` |
 | MultiSessionOpenDialog | 1〜20 clamp、OK時の `ExpandLinkInSessions` 呼出 | `MockEphemeralSessionManager` |
