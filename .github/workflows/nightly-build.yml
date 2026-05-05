@@ -9,6 +9,8 @@ jobs:
   build-and-test:
     runs-on: [self-hosted, linux, chromium-builder]
     timeout-minutes: 360
+    permissions:
+      issues: write
     env:
       CHROMIUM_SRC: /workspaces/chromium/src
       CHROMIUM_CONFIG_DIR: ${{ github.workspace }}/config
