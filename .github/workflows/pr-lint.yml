@@ -21,14 +21,20 @@ jobs:
 
       - name: clang-format check (overlay)
         run: |
-          find chromium_src/overlay \( -name '*.cc' -o -name '*.h' \) -print0 |
-            xargs -0 --no-run-if-empty clang-format-15 --dry-run --Werror
+          if [ -d chromium_src/overlay ]; then
+            find chromium_src/overlay \( -name '*.cc' -o -name '*.h' \) -print0 |
+              xargs -0 --no-run-if-empty clang-format-15 --dry-run --Werror
+          fi
 
-      - name: Patch dry-run
-        run: python3 build/ci_patch_dryrun.py
+      # TODO: build/ci_patch_dryrun.py が追加されたらコメントアウトを解除する
+      # - name: Patch dry-run
+      #   run: python3 build/ci_patch_dryrun.py
 
       - name: Python lint
-        run: pip install ruff && ruff check build/
+        run: |
+          if [ -d build ]; then
+            pip install ruff==0.4.4 && ruff check build/
+          fi
 
       - name: Spec markdown lint
-        run: npx markdownlint-cli2 'docs/**/*.md'
+        run: npx --yes markdownlint-cli2 'docs/**/*.md'
