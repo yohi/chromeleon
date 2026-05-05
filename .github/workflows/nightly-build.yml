@@ -9,6 +9,9 @@ jobs:
   build-and-test:
     runs-on: [self-hosted, linux, chromium-builder]
     timeout-minutes: 360
+    env:
+      CHROMIUM_SRC: /workspaces/chromium/src
+      CHROMIUM_CONFIG_DIR: ${{ github.workspace }}/config
     steps:
       - uses: actions/checkout@v4
 
@@ -23,7 +26,7 @@ jobs:
       - name: GN gen
         run: |
           cd $CHROMIUM_SRC
-          gn gen out/Default --args="$(cat /workspaces/custom-chromium/config/gn_args.gn)"
+          gn gen out/Default --args="$(cat ${CHROMIUM_CONFIG_DIR}/gn_args.gn)"
 
       - name: Build overlay unit tests
         run: cd $CHROMIUM_SRC && autoninja -C out/Default multi_session_overlay_tests
@@ -31,8 +34,24 @@ jobs:
       - name: Run unit tests
         run: bash build/run_unit_tests.sh
 
+      - name: Notify on failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issueTitle = `[Alert] Nightly Build Failed (${new Date().toLocaleDateString('ja-JP')})`;
+            const issueBody = `ナイトリービルドが失敗しました。\n詳細なログを確認してください: ${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`;
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: issueTitle,
+              body: issueBody,
+              labels: ['bug', 'nightly-build']
+            });
+
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: logs
           path: ${{ env.CHROMIUM_SRC }}/out/Default/*.log
+          retention-days: 7
