@@ -1,0 +1,35 @@
+{
+  "name": "custom-chromium-dev",
+  "build": { "dockerfile": "Dockerfile" },
+  "runArgs": [
+    "--cap-add=SYS_PTRACE",
+    "--security-opt", "seccomp=unconfined",
+    "--shm-size=2g"
+  ],
+  "mounts": [
+    "source=chromium-src,target=/workspaces/chromium/src,type=volume",
+    "source=chromium-out,target=/workspaces/chromium/out,type=volume",
+    "source=chromium-depot-tools,target=/workspaces/chromium/depot_tools,type=volume"
+  ],
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/custom-chromium,type=bind",
+  "workspaceFolder": "/workspaces/custom-chromium",
+  "containerEnv": {
+    "CHROMIUM_SRC": "/workspaces/chromium/src",
+    "CHROMIUM_OUT": "/workspaces/chromium/out/Default",
+    "DEPOT_TOOLS_PATH": "/workspaces/chromium/depot_tools",
+    "PATH": "/workspaces/chromium/depot_tools:${PATH}",
+    "CCACHE_DIR": "/workspaces/chromium/out/.ccache"
+  },
+  "postCreateCommand": ".devcontainer/post-create.sh",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "llvm-vs-code-extensions.vscode-clangd",
+        "ms-vscode.cpptools"
+      ],
+      "settings": {
+        "clangd.arguments": ["--compile-commands-dir=/workspaces/chromium/out/Default"]
+      }
+    }
+  }
+}
