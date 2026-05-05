@@ -1,0 +1,38 @@
+name: nightly-build
+
+on:
+  schedule:
+    - cron: "0 17 * * *" # JST 02:00
+  workflow_dispatch: {}
+
+jobs:
+  build-and-test:
+    runs-on: [self-hosted, linux, chromium-builder]
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: gclient sync
+        run: cd $CHROMIUM_SRC && gclient sync -D --force
+
+      - name: Sync overlay + apply patches
+        run: |
+          python3 build/sync_overlay.py
+          python3 build/apply_patches.py
+
+      - name: GN gen
+        run: |
+          cd $CHROMIUM_SRC
+          gn gen out/Default --args="$(cat /workspaces/custom-chromium/config/gn_args.gn)"
+
+      - name: Build overlay unit tests
+        run: cd $CHROMIUM_SRC && autoninja -C out/Default multi_session_overlay_tests
+
+      - name: Run unit tests
+        run: bash build/run_unit_tests.sh
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: logs
+          path: ${{ env.CHROMIUM_SRC }}/out/Default/*.log
