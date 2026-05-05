@@ -1,0 +1,31 @@
+--- a/chrome/browser/BUILD.gn
++++ b/chrome/browser/BUILD.gn
+@@ -8783,6 +8783,11 @@
+   group("chrome_internal_resources_gen") {
+     # Empty placeholder.
+   }
++  # CHROMELEON OVERLAY START
++  group("multi_session_overlay_all") {
++    deps = [
++      "//chromium_src/overlay/chrome/browser/multi_session",
++      "//chromium_src/overlay/chrome/browser/extensions/partition_extension_autoloader",
++      "//chromium_src/overlay/chrome/browser/ui/views/tab_grid",
++      "//chromium_src/overlay/chrome/browser/ui/views/multi_session_dialog",
++    ]
++  }
++  # CHROMELEON OVERLAY END
+ }
+ 
+ action("expired_flags_list_gen") {
+--- a/third_party/blink/renderer/modules/BUILD.gn
++++ b/third_party/blink/renderer/modules/BUILD.gn
+@@ -166,6 +166,9 @@
+     "//third_party/blink/renderer/modules/webusb",
+     "//third_party/blink/renderer/modules/worklet",
+     "//third_party/blink/renderer/modules/xr",
++    # CHROMELEON OVERLAY START
++    "//chromium_src/overlay/third_party/blink/renderer/modules/multi_session_fp",
++    # CHROMELEON OVERLAY END
+   ]
+ 
+   generated_modules = []
