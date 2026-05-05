@@ -1,0 +1,3 @@
+source_set("partition_extension_autoloader") {
+  sources = []
+}
