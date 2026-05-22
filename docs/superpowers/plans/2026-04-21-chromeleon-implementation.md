@@ -1746,7 +1746,7 @@ gh pr create --draft \
 - Create: `chromium_src/overlay/third_party/blink/renderer/modules/multi_session_fp/mulberry32.h`
 - Modify: `chromium_src/overlay/third_party/blink/renderer/modules/multi_session_fp/BUILD.gn`
 
-- [ ] **Step 1: Mulberry32 PRNG を作成する**
+- [x] **Step 1: Mulberry32 PRNG を作成する**
 
 ```cpp
 // chromium_src/overlay/third_party/blink/renderer/modules/multi_session_fp/mulberry32.h
@@ -1779,7 +1779,7 @@ class Mulberry32 {
 #endif  // CHROMIUM_SRC_OVERLAY_BLINK_MODULES_MULTI_SESSION_FP_MULBERRY32_H_
 ```
 
-- [ ] **Step 2: FingerprintNoiseSource ヘッダを作成する**
+- [x] **Step 2: FingerprintNoiseSource ヘッダを作成する**
 
 ```cpp
 // chromium_src/overlay/third_party/blink/renderer/modules/multi_session_fp/fingerprint_noise_source.h
@@ -1836,7 +1836,7 @@ class MODULES_EXPORT FingerprintNoiseSource final
 #endif  // CHROMIUM_SRC_OVERLAY_BLINK_MODULES_MULTI_SESSION_FP_FINGERPRINT_NOISE_SOURCE_H_
 ```
 
-- [ ] **Step 3: FingerprintNoiseSource ソースを作成する**
+- [x] **Step 3: FingerprintNoiseSource ソースを作成する**
 
 ```cpp
 // chromium_src/overlay/third_party/blink/renderer/modules/multi_session_fp/fingerprint_noise_source.cc
@@ -1913,7 +1913,7 @@ void FingerprintNoiseSource::Trace(Visitor* visitor) const {
 }  // namespace blink
 ```
 
-- [ ] **Step 4: BUILD.gn を更新する**
+- [x] **Step 4: BUILD.gn を更新する**
 
 ```gn
 # chromium_src/overlay/third_party/blink/renderer/modules/multi_session_fp/BUILD.gn
@@ -1934,14 +1934,14 @@ source_set("multi_session_fp") {
 }
 ```
 
-- [ ] **Step 5: コミットする**
+- [x] **Step 5: コミットする**
 
 ```bash
 git add chromium_src/overlay/third_party/blink/renderer/modules/multi_session_fp/
 git commit -m "feat(fingerprint): FingerprintNoiseSource Blink Supplement + Mulberry32 PRNG を実装"
 ```
 
-- [ ] **Step 6: Draft PR を作成する**
+- [x] **Step 6: Draft PR を作成する**
 
 ```bash
 git push -u origin feature/phase3-task2__noise-source
