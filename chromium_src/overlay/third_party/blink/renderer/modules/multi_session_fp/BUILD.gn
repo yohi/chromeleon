@@ -13,3 +13,16 @@ source_set("multi_session_fp") {
     "//third_party/blink/renderer/platform",
   ]
 }
+
+test("fingerprint_noise_source_unittest") {
+  sources = [
+    "fingerprint_noise_source_unittest.cc",
+    "mulberry32_unittest.cc",
+  ]
+
+  deps = [
+    ":multi_session_fp",
+    "//testing/gtest",
+    "//third_party/blink/renderer/platform:test_support",
+  ]
+}
