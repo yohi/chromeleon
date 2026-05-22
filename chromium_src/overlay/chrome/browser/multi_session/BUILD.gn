@@ -17,3 +17,16 @@ source_set("multi_session") {
     "//url",
   ]
 }
+
+test("ephemeral_session_manager_unittest") {
+  sources = [
+    "ephemeral_session_manager_unittest.cc",
+  ]
+
+  deps = [
+    ":multi_session",
+    "//chrome/test:test_support",
+    "//content/public/test:test_support",
+    "//testing/gtest",
+  ]
+}
