@@ -2516,7 +2516,7 @@ git add chromium_src/overlay/chrome/browser/extensions/partition_extension_autol
 git commit -m "feat(extensions): PartitionExtensionAutoloader サービスを実装"
 ```
 
-- [ ] **Step 2: Draft PR を作成する**
+- [x] **Step 2: Draft PR を作成する**
 
 ```bash
 git push -u origin feature/phase6-task1__autoloader-service
