@@ -1,2 +1,20 @@
-# This patch will be implemented in its corresponding Phase.
-# Placeholder for CI validation.
+--- a/chrome/browser/renderer_context_menu/render_view_context_menu.cc
++++ b/chrome/browser/renderer_context_menu/render_view_context_menu.cc
+@@ -35,1 +35,2 @@
+ #include "chrome/common/chrome_features.h"
++#include "chromium_src/overlay/chrome/browser/ui/views/multi_session_dialog/multi_session_open_dialog.h"
+@@ -500,2 +501,7 @@
+   // Dummy context for context menu generation
++
++  // CHROMELEON_HOOK: Add "Open in Multiple Sessions..." to context menu
++  if (params_.link_url.is_valid()) {
++    menu_model_.AddItem(50001, u"Open in Multiple Sessions...");
++  }
+   AppendLinkItems();
+@@ -1200,2 +1206,6 @@
+   switch (id) {
++    case 50001:
++      // CHROMELEON_HOOK: Handle "Open in Multiple Sessions..." execution
++      multi_session::MultiSessionOpenDialog::Show(browser_, params_.link_url);
++      return;
+     case IDC_CONTENT_CONTEXT_OPENLINKNEWTAB:
