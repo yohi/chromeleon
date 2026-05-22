@@ -18,3 +18,18 @@ source_set("partition_extension_autoloader") {
   ]
 }
 
+test("partition_extension_autoloader_unittest") {
+  sources = [
+    "partition_extension_autoloader_unittest.cc",
+  ]
+
+  deps = [
+    ":partition_extension_autoloader",
+    "//chrome/test:test_support",
+    "//content/public/test:test_support",
+    "//extensions:test_support",
+    "//testing/gtest",
+  ]
+}
+
+
