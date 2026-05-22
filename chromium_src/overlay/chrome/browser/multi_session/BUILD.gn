@@ -4,6 +4,8 @@ source_set("multi_session") {
     "ephemeral_session_manager.h",
     "ephemeral_session_manager_factory.cc",
     "ephemeral_session_manager_factory.h",
+    "fingerprint_seed_delivery.cc",
+    "fingerprint_seed_delivery.h",
     "session_handle.h",
   ]
 
