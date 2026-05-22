@@ -57,7 +57,7 @@ graph TD
 
 - Create: `.github/workflows/pr-lint.yml`
 
-- [ ] **Step 1: pr-lint.yml を作成する**
+- [x] **Step 1: pr-lint.yml を作成する**
 
 > **ランナーイメージについて:** `ubuntu-slim` を指定する。本ワークフローは overlay の C++ フォーマットチェック・Python lint・Markdown lint のみを行い、Chromium 本体のビルドは不要なため、軽量イメージで十分である。
 
@@ -99,14 +99,14 @@ jobs:
         run: npx markdownlint-cli2 'docs/**/*.md'
 ```
 
-- [ ] **Step 2: コミットする**
+- [x] **Step 2: コミットする**
 
 ```bash
 git add .github/workflows/pr-lint.yml
 git commit -m "ci: PR lint ワークフローを追加（clang-format, ruff, markdownlint）"
 ```
 
-- [ ] **Step 3: Draft PR を作成する**
+- [x] **Step 3: Draft PR を作成する**
 
 ```bash
 git push -u origin feature/phase0-task1__pr-lint-workflow
@@ -133,7 +133,7 @@ Runner: ubuntu-slim（Chromium ビルド不要のため）"
 
 - Create: `.github/workflows/nightly-build.yml`
 
-- [ ] **Step 1: nightly-build.yml を作成する**
+- [x] **Step 1: nightly-build.yml を作成する**
 
 > **ランナーイメージについて:** Nightly Build は Chromium 本体のフルビルド（`autoninja -C out/Default chrome`）を含み、数時間の実行時間・数十 GB のディスク・事前セットアップ済み depot_tools を要する。`ubuntu-slim` では対応不可能なため、`self-hosted` ランナーを指定する。これは `ubuntu-slim` を指定しない「特別な理由」に該当する。
 
@@ -179,7 +179,7 @@ jobs:
           path: ${{ env.CHROMIUM_SRC }}/out/Default/*.log
 ```
 
-- [ ] **Step 2: master ブランチのテスト実行トリガーを pr-lint.yml に追加する**
+- [x] **Step 2: master ブランチのテスト実行トリガーを pr-lint.yml に追加する**
 
 `pr-lint.yml` の `on` セクションに `push` トリガーを追加し、`master` へのプッシュ時にもテストが実行されるようにする。
 
@@ -192,14 +192,14 @@ on:
     branches: [master]
 ```
 
-- [ ] **Step 3: コミットする**
+- [x] **Step 3: コミットする**
 
 ```bash
 git add .github/workflows/nightly-build.yml .github/workflows/pr-lint.yml
 git commit -m "ci: nightly-build ワークフロー追加、master push トリガー追加"
 ```
 
-- [ ] **Step 4: Draft PR を作成する**
+- [x] **Step 4: Draft PR を作成する**
 
 ```bash
 git push -u origin feature/phase0-task2__nightly-build-workflow
@@ -955,7 +955,7 @@ gh pr create --draft \
 - Create: `chromium_src/overlay/chrome/browser/multi_session/ephemeral_session_manager.h`
 - Create: `chromium_src/overlay/chrome/browser/multi_session/session_handle.h`
 
-- [ ] **Step 1: session_handle.h を作成する**
+- [x] **Step 1: session_handle.h を作成する**
 
 ```cpp
 // chromium_src/overlay/chrome/browser/multi_session/session_handle.h
@@ -983,7 +983,7 @@ struct SessionHandle {
 #endif  // CHROMIUM_SRC_OVERLAY_CHROME_BROWSER_MULTI_SESSION_SESSION_HANDLE_H_
 ```
 
-- [ ] **Step 2: ephemeral_session_manager.h を作成する**
+- [x] **Step 2: ephemeral_session_manager.h を作成する**
 
 ```cpp
 // chromium_src/overlay/chrome/browser/multi_session/ephemeral_session_manager.h
@@ -1057,14 +1057,14 @@ class EphemeralSessionManager : public KeyedService {
 #endif  // CHROMIUM_SRC_OVERLAY_CHROME_BROWSER_MULTI_SESSION_EPHEMERAL_SESSION_MANAGER_H_
 ```
 
-- [ ] **Step 3: コミットする**
+- [x] **Step 3: コミットする**
 
 ```bash
 git add chromium_src/overlay/chrome/browser/multi_session/
 git commit -m "feat(session): SessionHandle 構造体と EphemeralSessionManager ヘッダを追加"
 ```
 
-- [ ] **Step 4: Draft PR を作成する**
+- [x] **Step 4: Draft PR を作成する**
 
 ```bash
 git push -u origin feature/phase2-task1__session-handle-header
@@ -1091,7 +1091,7 @@ gh pr create --draft \
 - Create: `chromium_src/overlay/chrome/browser/multi_session/ephemeral_session_manager_factory.cc`
 - Modify: `chromium_src/overlay/chrome/browser/multi_session/BUILD.gn`
 
-- [ ] **Step 1: ephemeral_session_manager.cc を作成する**
+- [x] **Step 1: ephemeral_session_manager.cc を作成する**
 
 ```cpp
 // chromium_src/overlay/chrome/browser/multi_session/ephemeral_session_manager.cc
@@ -1196,7 +1196,7 @@ void EphemeralSessionManager::RemoveObserver(Observer* obs) {
 }  // namespace multi_session
 ```
 
-- [ ] **Step 2: Factory ヘッダとソースを作成する**
+- [x] **Step 2: Factory ヘッダとソースを作成する**
 
 ```cpp
 // chromium_src/overlay/chrome/browser/multi_session/ephemeral_session_manager_factory.h
@@ -1274,7 +1274,7 @@ EphemeralSessionManagerFactory::BuildServiceInstanceForBrowserContext(
 }  // namespace multi_session
 ```
 
-- [ ] **Step 3: BUILD.gn を更新する**
+- [x] **Step 3: BUILD.gn を更新する**
 
 ```gn
 # chromium_src/overlay/chrome/browser/multi_session/BUILD.gn
@@ -1297,14 +1297,14 @@ source_set("multi_session") {
 }
 ```
 
-- [ ] **Step 4: コミットする**
+- [x] **Step 4: コミットする**
 
 ```bash
 git add chromium_src/overlay/chrome/browser/multi_session/
 git commit -m "feat(session): EphemeralSessionManager 実装と Factory を追加"
 ```
 
-- [ ] **Step 5: Draft PR を作成する**
+- [x] **Step 5: Draft PR を作成する**
 
 ```bash
 git push -u origin feature/phase2-task2__factory-impl
@@ -1332,7 +1332,7 @@ gh pr create --draft \
 - Create: `chromium_src/overlay/chrome/browser/multi_session/fingerprint_seed_delivery.cc`
 - Modify: `chromium_src/overlay/chrome/browser/multi_session/BUILD.gn`
 
-- [ ] **Step 1: fingerprint_seed_delivery.h を作成する**
+- [x] **Step 1: fingerprint_seed_delivery.h を作成する**
 
 ```cpp
 // chromium_src/overlay/chrome/browser/multi_session/fingerprint_seed_delivery.h
@@ -1368,7 +1368,7 @@ class FingerprintSeedDelivery
 #endif  // CHROMIUM_SRC_OVERLAY_CHROME_BROWSER_MULTI_SESSION_FINGERPRINT_SEED_DELIVERY_H_
 ```
 
-- [ ] **Step 2: fingerprint_seed_delivery.cc を作成する**
+- [x] **Step 2: fingerprint_seed_delivery.cc を作成する**
 
 ```cpp
 // chromium_src/overlay/chrome/browser/multi_session/fingerprint_seed_delivery.cc
@@ -1417,7 +1417,7 @@ void FingerprintSeedDelivery::RenderFrameCreated(
 }  // namespace multi_session
 ```
 
-- [ ] **Step 3: BUILD.gn にソースを追加する**
+- [x] **Step 3: BUILD.gn にソースを追加する**
 
 `multi_session` の BUILD.gn の sources に以下を追加:
 
@@ -1426,14 +1426,14 @@ void FingerprintSeedDelivery::RenderFrameCreated(
     "fingerprint_seed_delivery.h",
 ```
 
-- [ ] **Step 4: コミットする**
+- [x] **Step 4: コミットする**
 
 ```bash
 git add chromium_src/overlay/chrome/browser/multi_session/
 git commit -m "feat(session): FingerprintSeedDelivery を追加（Mojo 送信は Phase 3 で実装）"
 ```
 
-- [ ] **Step 5: Draft PR を作成する**
+- [x] **Step 5: Draft PR を作成する**
 
 ```bash
 git push -u origin feature/phase2-task3__seed-delivery
@@ -1458,7 +1458,7 @@ gh pr create --draft \
 - Create: `chromium_src/overlay/chrome/browser/multi_session/ephemeral_session_manager_unittest.cc`
 - Modify: `chromium_src/overlay/chrome/browser/multi_session/BUILD.gn`
 
-- [ ] **Step 1: ユニットテストを作成する**
+- [x] **Step 1: ユニットテストを作成する**
 
 ```cpp
 // chromium_src/overlay/chrome/browser/multi_session/ephemeral_session_manager_unittest.cc
@@ -1571,7 +1571,7 @@ TEST_F(EphemeralSessionManagerTest, Observer_CreateNotifiesObserver) {
 }  // namespace multi_session
 ```
 
-- [ ] **Step 2: BUILD.gn にテストターゲットを追加する**
+- [x] **Step 2: BUILD.gn にテストターゲットを追加する**
 
 ```gn
 # chromium_src/overlay/chrome/browser/multi_session/BUILD.gn に追記
@@ -1589,14 +1589,14 @@ test("ephemeral_session_manager_unittest") {
 }
 ```
 
-- [ ] **Step 3: コミットする**
+- [x] **Step 3: コミットする**
 
 ```bash
 git add chromium_src/overlay/chrome/browser/multi_session/
 git commit -m "test(session): EphemeralSessionManager のユニットテストを追加"
 ```
 
-- [ ] **Step 4: Draft PR を作成する**
+- [x] **Step 4: Draft PR を作成する**
 
 ```bash
 git push -u origin feature/phase2-task4__unit-tests
