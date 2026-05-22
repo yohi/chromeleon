@@ -1,2 +1,12 @@
-# This patch will be implemented in its corresponding Phase.
-# Placeholder for CI validation.
+--- a/chrome/browser/ui/views/toolbar/toolbar_view.cc
++++ b/chrome/browser/ui/views/toolbar/toolbar_view.cc
+@@ -40,1 +40,2 @@
+ #include "chrome/browser/ui/views/toolbar/toolbar_button.h"
++#include "chromium_src/overlay/chrome/browser/ui/views/tab_grid/grid_toggle_button.h"
+@@ -250,2 +251,6 @@
+   AddChildView(std::move(location_bar_));
++  // MULTI_SESSION_HOOK: add Grid toggle button right after URL bar.
++  AddChildView(std::make_unique<multi_session::GridToggleButton>(
++      browser_view_,
++      base::BindRepeating(&BrowserView::ToggleTabGrid, browser_view_)));
+   AddChildView(std::move(app_menu_button_));
