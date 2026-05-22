@@ -2379,14 +2379,14 @@ gh pr create --draft \
 - Create: `chromium_src/overlay/chrome/browser/ui/views/tab_grid/tab_grid_tile.{h,cc}`
 - Create: `chromium_src/overlay/chrome/browser/ui/views/tab_grid/tab_grid_page_indicator.{h,cc}`
 
-- [ ] **Step 1: TabGridTile + PageIndicator を作成・コミットする**
+- [x] **Step 1: TabGridTile + PageIndicator を作成・コミットする**
 
 ```bash
 git add chromium_src/overlay/chrome/browser/ui/views/tab_grid/
 git commit -m "feat(grid): TabGridTile + TabGridPageIndicator を実装"
 ```
 
-- [ ] **Step 2: Draft PR を作成する**
+- [x] **Step 2: Draft PR を作成する**
 
 ```bash
 git push -u origin feature/phase5-task1__grid-tile
