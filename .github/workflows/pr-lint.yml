@@ -1,0 +1,34 @@
+name: pr-lint
+
+on:
+  pull_request:
+    branches: [master]
+
+jobs:
+  lint:
+    runs-on: ubuntu-slim
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install clang-format
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends clang-format-15
+
+      - name: clang-format check (overlay)
+        run: |
+          find chromium_src/overlay \( -name '*.cc' -o -name '*.h' \) -print0 |
+            xargs -0 --no-run-if-empty clang-format-15 --dry-run --Werror
+
+      - name: Patch dry-run
+        run: python3 build/ci_patch_dryrun.py
+
+      - name: Python lint
+        run: pip install ruff && ruff check build/
+
+      - name: Spec markdown lint
+        run: npx markdownlint-cli2 'docs/**/*.md'
