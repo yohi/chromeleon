@@ -1,0 +1,8 @@
+// chromium_src/overlay/public/mojom/multi_session/fingerprint.mojom
+module blink.mojom;
+
+// Browser → Renderer へのフィンガープリント seed 配信インタフェース。
+// RenderFrame 生成時に一度だけ呼ばれ、Renderer 側でキャッシュされる。
+interface FingerprintSeedReceiver {
+  SetSeed(uint64 seed);
+};
