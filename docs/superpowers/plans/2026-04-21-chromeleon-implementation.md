@@ -1689,7 +1689,7 @@ gh pr create --draft \
 - Create: `chromium_src/overlay/public/mojom/multi_session/fingerprint.mojom`
 - Modify: `chromium_src/overlay/public/mojom/multi_session/BUILD.gn`
 
-- [ ] **Step 1: Mojo IDL を作成する**
+- [x] **Step 1: Mojo IDL を作成する**
 
 ```mojom
 // chromium_src/overlay/public/mojom/multi_session/fingerprint.mojom
@@ -1702,7 +1702,7 @@ interface FingerprintSeedReceiver {
 };
 ```
 
-- [ ] **Step 2: BUILD.gn を更新する**
+- [x] **Step 2: BUILD.gn を更新する**
 
 ```gn
 # chromium_src/overlay/public/mojom/multi_session/BUILD.gn
@@ -1713,14 +1713,14 @@ mojom("fingerprint_mojom") {
 }
 ```
 
-- [ ] **Step 3: コミットする**
+- [x] **Step 3: コミットする**
 
 ```bash
 git add chromium_src/overlay/public/mojom/
 git commit -m "feat(fingerprint): Mojo IDL FingerprintSeedReceiver を定義"
 ```
 
-- [ ] **Step 4: Draft PR を作成する**
+- [x] **Step 4: Draft PR を作成する**
 
 ```bash
 git push -u origin feature/phase3-task1__mojo-idl

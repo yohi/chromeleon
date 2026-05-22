@@ -1,4 +1,5 @@
-# Mojo IDL ターゲット（Phase 3 で実装）
-source_set("fingerprint_mojom") {
-  sources = []
+import("//mojo/public/tools/bindings/mojom.gni")
+
+mojom("fingerprint_mojom") {
+  sources = [ "fingerprint.mojom" ]
 }
