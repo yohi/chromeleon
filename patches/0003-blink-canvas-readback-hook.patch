@@ -1,2 +1,14 @@
-# This patch will be implemented in its corresponding Phase.
-# Placeholder for CI validation.
+--- a/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.cc
++++ b/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.cc
+@@ -35,1 +35,2 @@
+ #include "third_party/blink/renderer/core/html/canvas/image_data.h"
++#include "chromium_src/overlay/third_party/blink/renderer/modules/multi_session_fp/fingerprint_noise_source.h"
+@@ -800,2 +801,8 @@
+   ImageData* image_data = nullptr; // Dummy context for patch syntax validation
++
++  // CHROMELEON_HOOK: Apply fingerprint noise to canvas readback data.
++  if (auto* window = DynamicTo<LocalDOMWindow>(GetExecutionContext())) {
++    auto& noise = FingerprintNoiseSource::From(*window);
++    noise.ApplyCanvasNoise(image_data);
++  }
+   return image_data;
