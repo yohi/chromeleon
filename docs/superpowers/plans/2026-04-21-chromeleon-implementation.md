@@ -2015,7 +2015,7 @@ gh pr create --draft \
 - Create: `chromium_src/overlay/third_party/blink/renderer/modules/multi_session_fp/fingerprint_noise_source_unittest.cc`
 - Modify: `chromium_src/overlay/third_party/blink/renderer/modules/multi_session_fp/BUILD.gn`
 
-- [ ] **Step 1: Mulberry32 ユニットテストを作成する**
+- [x] **Step 1: Mulberry32 ユニットテストを作成する**
 
 ```cpp
 // .../multi_session_fp/mulberry32_unittest.cc
@@ -2062,7 +2062,7 @@ TEST(Mulberry32Test, ZeroSeed_ProducesNonZero) {
 }  // namespace blink
 ```
 
-- [ ] **Step 2: FingerprintNoiseSource ユニットテストを作成する**
+- [x] **Step 2: FingerprintNoiseSource ユニットテストを作成する**
 
 ```cpp
 // .../multi_session_fp/fingerprint_noise_source_unittest.cc
@@ -2075,7 +2075,7 @@ TEST(Mulberry32Test, ZeroSeed_ProducesNonZero) {
 // Blink テストインフラの正確な API は実装時に確認すること。
 ```
 
-- [ ] **Step 3: BUILD.gn にテストターゲットを追加する**
+- [x] **Step 3: BUILD.gn にテストターゲットを追加する**
 
 ```gn
 test("fingerprint_noise_source_unittest") {
@@ -2092,14 +2092,14 @@ test("fingerprint_noise_source_unittest") {
 }
 ```
 
-- [ ] **Step 4: コミットする**
+- [x] **Step 4: コミットする**
 
 ```bash
 git add chromium_src/overlay/third_party/blink/renderer/modules/multi_session_fp/
 git commit -m "test(fingerprint): Mulberry32 + FingerprintNoiseSource のユニットテストを追加"
 ```
 
-- [ ] **Step 5: Draft PR を作成する**
+- [x] **Step 5: Draft PR を作成する**
 
 ```bash
 git push -u origin feature/phase3-task4__unit-tests
