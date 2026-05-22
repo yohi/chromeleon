@@ -2539,7 +2539,7 @@ gh pr create --draft \
 - Modify: `patches/0007-extensions-partition-load-hook.patch`
 - Modify: `patches/series`
 
-- [ ] **Step 1: テスト + パッチ 0007 を作成してコミットする**
+- [x] **Step 1: テスト + パッチ 0007 を作成してコミットする**
 
 テストカバレッジ: Pref にIDあり→有効化、Pref空→何もしない、未インストールID→スキップ。パッチ 0007: `ExtensionService::EnableExtensionForPartition` スタブ (~10行)。
 
@@ -2548,7 +2548,7 @@ git add chromium_src/ patches/
 git commit -m "test(extensions): Autoloader テスト追加 + パッチ 0007 実装"
 ```
 
-- [ ] **Step 2: Draft PR を作成する**
+- [x] **Step 2: Draft PR を作成する**
 
 ```bash
 git push -u origin feature/phase6-task2__tests-patch
