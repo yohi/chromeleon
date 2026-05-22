@@ -1,0 +1,14 @@
+# config/gn_args.gn
+is_debug = false
+is_component_build = true
+symbol_level = 1
+enable_nacl = false
+use_goma = false
+use_remoteexec = false
+# cc_wrapper = "ccache" を使用する場合は、ローカル環境や CI で個別に設定することを推奨します。
+# 共有設定では空にしておくことで、ccache 未インストールの環境でのビルド失敗を防ぎます。
+cc_wrapper = ""
+blink_symbol_level = 1
+is_official_build = false
+proprietary_codecs = false
+ffmpeg_branding = "Chromium"
