@@ -17,14 +17,14 @@ TEST(FingerprintNoiseSourceTest, NoSeed_NoChange) {
   test::TaskEnvironment task_environment;
   V8TestingScope scope;
 
-  auto& noise_source = FingerprintNoiseSource::From(scope.GetWindow());
+  auto &noise_source = FingerprintNoiseSource::From(scope.GetWindow());
   EXPECT_FALSE(noise_source.has_seed());
 
   // ImageDataを作成 (2x2)
-  ImageData* image_data = ImageData::CreateForTest(2, 2);
+  ImageData *image_data = ImageData::CreateForTest(2, 2);
   ASSERT_NE(image_data, nullptr);
 
-  auto* data_array = image_data->data();
+  auto *data_array = image_data->data();
   ASSERT_NE(data_array, nullptr);
 
   // 初期値を128に設定
@@ -55,11 +55,11 @@ TEST(FingerprintNoiseSourceTest, SameSeed_SameOutput) {
   V8TestingScope scope;
 
   // 1つ目のウィンドウでシード12345を設定してCanvasにノイズを適用
-  auto& noise_source1 = FingerprintNoiseSource::From(scope.GetWindow());
+  auto &noise_source1 = FingerprintNoiseSource::From(scope.GetWindow());
   noise_source1.SetSeed(12345ULL);
 
-  ImageData* image_data1 = ImageData::CreateForTest(2, 2);
-  auto* data_array1 = image_data1->data();
+  ImageData *image_data1 = ImageData::CreateForTest(2, 2);
+  auto *data_array1 = image_data1->data();
   for (size_t i = 0; i < data_array1->length(); ++i) {
     data_array1->Data()[i] = 128;
   }
@@ -72,11 +72,11 @@ TEST(FingerprintNoiseSourceTest, SameSeed_SameOutput) {
 
   // 2つ目のウィンドウで、同じシードを設定
   V8TestingScope scope2;
-  auto& noise_source2 = FingerprintNoiseSource::From(scope2.GetWindow());
+  auto &noise_source2 = FingerprintNoiseSource::From(scope2.GetWindow());
   noise_source2.SetSeed(12345ULL);
 
-  ImageData* image_data2 = ImageData::CreateForTest(2, 2);
-  auto* data_array2 = image_data2->data();
+  ImageData *image_data2 = ImageData::CreateForTest(2, 2);
+  auto *data_array2 = image_data2->data();
   for (size_t i = 0; i < data_array2->length(); ++i) {
     data_array2->Data()[i] = 128;
   }
@@ -101,21 +101,21 @@ TEST(FingerprintNoiseSourceTest, DifferentSeed_DifferentOutput) {
   V8TestingScope scope1;
   V8TestingScope scope2;
 
-  auto& noise_source1 = FingerprintNoiseSource::From(scope1.GetWindow());
+  auto &noise_source1 = FingerprintNoiseSource::From(scope1.GetWindow());
   noise_source1.SetSeed(11111ULL);
 
-  auto& noise_source2 = FingerprintNoiseSource::From(scope2.GetWindow());
+  auto &noise_source2 = FingerprintNoiseSource::From(scope2.GetWindow());
   noise_source2.SetSeed(22222ULL);
 
-  ImageData* image_data1 = ImageData::CreateForTest(2, 2);
-  auto* data_array1 = image_data1->data();
+  ImageData *image_data1 = ImageData::CreateForTest(2, 2);
+  auto *data_array1 = image_data1->data();
   for (size_t i = 0; i < data_array1->length(); ++i) {
     data_array1->Data()[i] = 128;
   }
   noise_source1.ApplyCanvasNoise(image_data1);
 
-  ImageData* image_data2 = ImageData::CreateForTest(2, 2);
-  auto* data_array2 = image_data2->data();
+  ImageData *image_data2 = ImageData::CreateForTest(2, 2);
+  auto *data_array2 = image_data2->data();
   for (size_t i = 0; i < data_array2->length(); ++i) {
     data_array2->Data()[i] = 128;
   }
@@ -150,5 +150,5 @@ TEST(FingerprintNoiseSourceTest, DifferentSeed_DifferentOutput) {
   EXPECT_TRUE(webgl_different);
 }
 
-}  // namespace
-}  // namespace blink
+} // namespace
+} // namespace blink

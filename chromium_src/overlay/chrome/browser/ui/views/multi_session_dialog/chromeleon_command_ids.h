@@ -7,7 +7,8 @@
 // 将来の Chromium 更新でコンフリクトが生じた場合はこのヘッダを修正する。
 //
 // Usage:
-//   #include "chromium_src/overlay/chrome/browser/ui/views/multi_session_dialog/chromeleon_command_ids.h"
+//   #include
+//   "chromium_src/overlay/chrome/browser/ui/views/multi_session_dialog/chromeleon_command_ids.h"
 
 #ifndef CHROMIUM_SRC_OVERLAY_CHROME_BROWSER_UI_VIEWS_MULTI_SESSION_DIALOG_CHROMELEON_COMMAND_IDS_H_
 #define CHROMIUM_SRC_OVERLAY_CHROME_BROWSER_UI_VIEWS_MULTI_SESSION_DIALOG_CHROMELEON_COMMAND_IDS_H_
@@ -16,4 +17,4 @@
 // 範囲: 57100–57199 を Chromeleon 用として予約。
 constexpr int IDC_CONTENT_CONTEXT_OPENLINK_MULTI_SESSION = 57100;
 
-#endif  // CHROMIUM_SRC_OVERLAY_CHROME_BROWSER_UI_VIEWS_MULTI_SESSION_DIALOG_CHROMELEON_COMMAND_IDS_H_
+#endif // CHROMIUM_SRC_OVERLAY_CHROME_BROWSER_UI_VIEWS_MULTI_SESSION_DIALOG_CHROMELEON_COMMAND_IDS_H_

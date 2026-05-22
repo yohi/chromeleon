@@ -12,7 +12,7 @@ namespace multi_session {
 namespace {
 
 class EphemeralSessionManagerTest : public testing::Test {
- protected:
+protected:
   void SetUp() override {
     profile_ = std::make_unique<TestingProfile>();
     manager_ = std::make_unique<EphemeralSessionManager>(profile_.get());
@@ -79,17 +79,17 @@ TEST_F(EphemeralSessionManagerTest, GetSeed_ZeroSeedIsValid) {
 // --- Observer テスト ---
 
 class MockObserver : public EphemeralSessionManager::Observer {
- public:
+public:
   int created_count = 0;
   int destroyed_count = 0;
   std::string last_created_id;
   std::string last_destroyed_id;
 
-  void OnPartitionCreated(const SessionHandle& handle) override {
+  void OnPartitionCreated(const SessionHandle &handle) override {
     ++created_count;
     last_created_id = handle.partition_id;
   }
-  void OnPartitionDestroyed(const std::string& partition_id) override {
+  void OnPartitionDestroyed(const std::string &partition_id) override {
     ++destroyed_count;
     last_destroyed_id = partition_id;
   }
@@ -104,5 +104,5 @@ TEST_F(EphemeralSessionManagerTest, Observer_CreateNotifiesObserver) {
   manager_->RemoveObserver(&obs);
 }
 
-}  // namespace
-}  // namespace multi_session
+} // namespace
+} // namespace multi_session

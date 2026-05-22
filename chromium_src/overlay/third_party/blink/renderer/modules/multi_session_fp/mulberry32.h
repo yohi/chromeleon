@@ -9,7 +9,7 @@ namespace blink {
 // Allocation-free, deterministic 32-bit PRNG.
 // 同一 seed + 同一呼出回数 → 同一出力を保証する。
 class Mulberry32 {
- public:
+public:
   explicit Mulberry32(uint32_t seed) : state_(seed) {}
 
   uint32_t Next() {
@@ -19,10 +19,10 @@ class Mulberry32 {
     return z ^ (z >> 14);
   }
 
- private:
+private:
   uint32_t state_;
 };
 
-}  // namespace blink
+} // namespace blink
 
-#endif  // CHROMIUM_SRC_OVERLAY_BLINK_MODULES_MULTI_SESSION_FP_MULBERRY32_H_
+#endif // CHROMIUM_SRC_OVERLAY_BLINK_MODULES_MULTI_SESSION_FP_MULBERRY32_H_

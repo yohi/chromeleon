@@ -14,22 +14,20 @@
 namespace multi_session {
 
 // static
-void MultiSessionOpenDialog::Show(Browser* browser, const GURL& link_url) {
+void MultiSessionOpenDialog::Show(Browser *browser, const GURL &link_url) {
   auto dialog = std::make_unique<MultiSessionOpenDialog>(browser, link_url);
   views::DialogDelegate::CreateDialogWidget(
       std::move(dialog), nullptr, browser->window()->GetNativeWindow())
       ->Show();
 }
 
-MultiSessionOpenDialog::MultiSessionOpenDialog(
-    Browser* browser, const GURL& link_url)
+MultiSessionOpenDialog::MultiSessionOpenDialog(Browser *browser,
+                                               const GURL &link_url)
     : browser_(browser), link_url_(link_url) {
   SetLayoutManager(std::make_unique<views::BoxLayout>(
-      views::BoxLayout::Orientation::kVertical,
-      gfx::Insets(16), 8));
+      views::BoxLayout::Orientation::kVertical, gfx::Insets(16), 8));
 
-  AddChildView(std::make_unique<views::Label>(
-      u"Number of sessions (1-20):"));
+  AddChildView(std::make_unique<views::Label>(u"Number of sessions (1-20):"));
 
   auto field = std::make_unique<views::Textfield>();
   field->SetText(u"5");
@@ -50,11 +48,11 @@ bool MultiSessionOpenDialog::Accept() {
   if (!base::StringToInt(count_field_->GetText(), &n))
     return false;
   n = std::clamp(n, 1, 20);
-  auto* mgr = EphemeralSessionManagerFactory::GetForProfile(
-      browser_->profile());
+  auto *mgr =
+      EphemeralSessionManagerFactory::GetForProfile(browser_->profile());
   CHECK(mgr);
   mgr->ExpandLinkInSessions(link_url_, n);
   return true;
 }
 
-}  // namespace multi_session
+} // namespace multi_session

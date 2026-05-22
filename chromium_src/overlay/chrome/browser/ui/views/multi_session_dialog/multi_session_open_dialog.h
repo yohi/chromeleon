@@ -7,27 +7,29 @@
 #include "url/gurl.h"
 
 class Browser;
-namespace views { class Textfield; }
+namespace views {
+class Textfield;
+}
 
 namespace multi_session {
 
 class MultiSessionOpenDialog : public views::DialogDelegateView {
- public:
-  static void Show(Browser* browser, const GURL& link_url);
+public:
+  static void Show(Browser *browser, const GURL &link_url);
 
-  MultiSessionOpenDialog(Browser* browser, const GURL& link_url);
+  MultiSessionOpenDialog(Browser *browser, const GURL &link_url);
   ~MultiSessionOpenDialog() override;
 
   // views::DialogDelegateView:
   std::u16string GetWindowTitle() const override;
   bool Accept() override;
 
- private:
+private:
   raw_ptr<Browser> browser_;
   GURL link_url_;
   raw_ptr<views::Textfield> count_field_;
 };
 
-}  // namespace multi_session
+} // namespace multi_session
 
 #endif

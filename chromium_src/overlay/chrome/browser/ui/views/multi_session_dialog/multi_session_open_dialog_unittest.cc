@@ -12,13 +12,12 @@ namespace multi_session {
 namespace {
 
 class MultiSessionOpenDialogTest : public BrowserWithTestWindowTest {
- protected:
+protected:
   void SetUp() override {
     BrowserWithTestWindowTest::SetUp();
     EphemeralSessionManagerFactory::GetInstance()->SetTestingFactory(
-        profile(),
-        base::BindRepeating([](content::BrowserContext* context)
-                                -> std::unique_ptr<KeyedService> {
+        profile(), base::BindRepeating([](content::BrowserContext *context)
+                                           -> std::unique_ptr<KeyedService> {
           return std::make_unique<EphemeralSessionManager>(
               Profile::FromBrowserContext(context));
         }));
@@ -31,5 +30,5 @@ TEST_F(MultiSessionOpenDialogTest, BasicTitle) {
   EXPECT_EQ(dialog->GetWindowTitle(), u"Open in Multiple Sessions");
 }
 
-}  // namespace
-}  // namespace multi_session
+} // namespace
+} // namespace multi_session
