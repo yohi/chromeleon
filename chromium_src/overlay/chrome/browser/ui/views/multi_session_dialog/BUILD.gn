@@ -1,0 +1,3 @@
+source_set("multi_session_dialog") {
+  sources = []
+}
