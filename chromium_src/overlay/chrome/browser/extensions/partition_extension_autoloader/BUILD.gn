@@ -1,3 +1,35 @@
 source_set("partition_extension_autoloader") {
-  sources = []
+  sources = [
+    "partition_extension_autoloader.cc",
+    "partition_extension_autoloader.h",
+    "partition_extension_autoloader_factory.cc",
+    "partition_extension_autoloader_factory.h",
+  ]
+
+  deps = [
+    "//base",
+    "//chrome/browser/profiles:profile",
+    "//components/keyed_service/content",
+    "//components/pref_registry",
+    "//components/prefs",
+    "//content/public/browser",
+    "//extensions/browser",
+    "//chromium_src/overlay/chrome/browser/multi_session",
+  ]
 }
+
+test("partition_extension_autoloader_unittest") {
+  sources = [
+    "partition_extension_autoloader_unittest.cc",
+  ]
+
+  deps = [
+    ":partition_extension_autoloader",
+    "//chrome/test:test_support",
+    "//content/public/test:test_support",
+    "//extensions:test_support",
+    "//testing/gtest",
+  ]
+}
+
+

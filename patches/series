@@ -8,4 +8,4 @@
 0004-blink-webgl-readpixels-hook.patch
 0005-chrome-render-view-context-menu-hook.patch
 0006-chrome-browser-view-grid-toggle-hook.patch
-# 0007-extensions-partition-load-hook.patch
+0007-extensions-partition-load-hook.patch

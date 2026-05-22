@@ -1,2 +1,33 @@
-# This patch will be implemented in its corresponding Phase.
-# Placeholder for CI validation.
+--- a/chrome/browser/extensions/extension_service.h
++++ b/chrome/browser/extensions/extension_service.h
+@@ -100,1 +100,7 @@
+   void CheckManagementPolicy();
++
++  void EnableExtensionForPartition(
++      const std::string& extension_id,
++      const std::string& partition_id);
++
++  static void SetEnableExtensionForPartitionCallbackForTesting(
++      void (*callback)(const std::string&, const std::string&));
+--- a/chrome/browser/extensions/extension_service.cc
++++ b/chrome/browser/extensions/extension_service.cc
+@@ -500,1 +500,19 @@
+ }
++
++namespace {
++void (*g_enable_extension_for_partition_callback_for_testing)(
++    const std::string&, const std::string&) = nullptr;
++}
++
++void ExtensionService::EnableExtensionForPartition(
++    const std::string& extension_id,
++    const std::string& partition_id) {
++  if (g_enable_extension_for_partition_callback_for_testing) {
++    g_enable_extension_for_partition_callback_for_testing(extension_id, partition_id);
++  }
++}
++
++void ExtensionService::SetEnableExtensionForPartitionCallbackForTesting(
++    void (*callback)(const std::string&, const std::string&)) {
++  g_enable_extension_for_partition_callback_for_testing = callback;
++}
