@@ -2507,7 +2507,7 @@ gh pr create --draft \
 - Create: `chromium_src/overlay/chrome/browser/extensions/partition_extension_autoloader/partition_extension_autoloader_factory.{h,cc}`
 - Modify: BUILD.gn
 
-- [ ] **Step 1: Autoloader + Factory を作成してコミットする**
+- [x] **Step 1: Autoloader + Factory を作成してコミットする**
 
 設計書 §4.5 に基づく EphemeralSessionManager::Observer 実装。PrefService の `kAutoEnabledExtensionIds` を読み取り、新規パーティション生成時に拡張を自動有効化する。
 
