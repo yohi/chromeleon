@@ -1,0 +1,4 @@
+# Mojo IDL ターゲット（Phase 3 で実装）
+source_set("fingerprint_mojom") {
+  sources = []
+}
