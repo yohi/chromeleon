@@ -1,3 +1,15 @@
 source_set("tab_grid") {
-  sources = []
+  sources = [
+    "tab_grid_tile.cc",
+    "tab_grid_tile.h",
+    "tab_grid_page_indicator.cc",
+    "tab_grid_page_indicator.h",
+  ]
+
+  deps = [
+    "//base",
+    "//chrome/browser/ui",
+    "//ui/gfx",
+    "//ui/views",
+  ]
 }
