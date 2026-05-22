@@ -2478,7 +2478,7 @@ git add chromium_src/overlay/chrome/browser/ui/views/tab_grid/
 git commit -m "test(grid): TabGridView のユニットテストを追加"
 ```
 
-- [ ] **Step 2: Draft PR を作成する**
+- [x] **Step 2: Draft PR を作成する**
 
 ```bash
 git push -u origin feature/phase5-task4__unit-tests
