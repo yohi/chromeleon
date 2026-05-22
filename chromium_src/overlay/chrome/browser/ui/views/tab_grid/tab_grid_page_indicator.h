@@ -9,20 +9,21 @@
 namespace views {
 class Button;
 class Label;
-}
+} // namespace views
 
 namespace multi_session {
 
 class TabGridPageIndicator : public views::View {
- public:
-  explicit TabGridPageIndicator(base::RepeatingCallback<void(int)> page_change_callback);
-  TabGridPageIndicator(const TabGridPageIndicator&) = delete;
-  TabGridPageIndicator& operator=(const TabGridPageIndicator&) = delete;
+public:
+  explicit TabGridPageIndicator(
+      base::RepeatingCallback<void(int)> page_change_callback);
+  TabGridPageIndicator(const TabGridPageIndicator &) = delete;
+  TabGridPageIndicator &operator=(const TabGridPageIndicator &) = delete;
   ~TabGridPageIndicator() override;
 
   void SetPageInfo(int current_page, int total_pages);
 
- private:
+private:
   void OnPrevButtonClicked();
   void OnNextButtonClicked();
   void UpdateButtonsState();
@@ -35,6 +36,6 @@ class TabGridPageIndicator : public views::View {
   int total_pages_ = 0;
 };
 
-}  // namespace multi_session
+} // namespace multi_session
 
-#endif  // CHROMIUM_SRC_OVERLAY_CHROME_BROWSER_UI_VIEWS_TAB_GRID_TAB_GRID_PAGE_INDICATOR_H_
+#endif // CHROMIUM_SRC_OVERLAY_CHROME_BROWSER_UI_VIEWS_TAB_GRID_TAB_GRID_PAGE_INDICATOR_H_

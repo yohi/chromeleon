@@ -10,16 +10,16 @@ class BrowserView;
 namespace multi_session {
 
 class GridToggleButton : public views::LabelButton {
- public:
-  GridToggleButton(BrowserView* browser_view, PressedCallback callback);
-  GridToggleButton(const GridToggleButton&) = delete;
-  GridToggleButton& operator=(const GridToggleButton&) = delete;
+public:
+  GridToggleButton(BrowserView *browser_view, PressedCallback callback);
+  GridToggleButton(const GridToggleButton &) = delete;
+  GridToggleButton &operator=(const GridToggleButton &) = delete;
   ~GridToggleButton() override;
 
- private:
+private:
   raw_ptr<BrowserView> browser_view_;
 };
 
-}  // namespace multi_session
+} // namespace multi_session
 
-#endif  // CHROMIUM_SRC_OVERLAY_CHROME_BROWSER_UI_VIEWS_TAB_GRID_GRID_TOGGLE_BUTTON_H_
+#endif // CHROMIUM_SRC_OVERLAY_CHROME_BROWSER_UI_VIEWS_TAB_GRID_GRID_TOGGLE_BUTTON_H_

@@ -12,9 +12,8 @@ namespace multi_session {
 TabGridPageIndicator::TabGridPageIndicator(
     base::RepeatingCallback<void(int)> page_change_callback)
     : page_change_callback_(std::move(page_change_callback)) {
-  auto* layout = SetLayoutManager(std::make_unique<views::BoxLayout>(
-      views::BoxLayout::Orientation::kHorizontal,
-      gfx::Insets(8), 12));
+  auto *layout = SetLayoutManager(std::make_unique<views::BoxLayout>(
+      views::BoxLayout::Orientation::kHorizontal, gfx::Insets(8), 12));
   layout->set_main_axis_alignment(views::BoxLayout::MainAxisAlignment::kCenter);
   layout->set_cross_axis_alignment(
       views::BoxLayout::CrossAxisAlignment::kCenter);
@@ -40,9 +39,8 @@ void TabGridPageIndicator::SetPageInfo(int current_page, int total_pages) {
   current_page_ = current_page;
   total_pages_ = total_pages;
 
-  std::string info = base::StringPrintf("Page %d of %d",
-                                        total_pages_ > 0 ? current_page_ + 1 : 0,
-                                        total_pages_);
+  std::string info = base::StringPrintf(
+      "Page %d of %d", total_pages_ > 0 ? current_page_ + 1 : 0, total_pages_);
   label_->SetText(base::ASCIIToUTF16(info));
 
   UpdateButtonsState();
@@ -65,4 +63,4 @@ void TabGridPageIndicator::UpdateButtonsState() {
   next_button_->SetEnabled(current_page_ < total_pages_ - 1);
 }
 
-}  // namespace multi_session
+} // namespace multi_session

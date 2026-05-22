@@ -2469,7 +2469,7 @@ gh pr create --draft \
 - Create: `chromium_src/overlay/chrome/browser/ui/views/tab_grid/tab_grid_view_unittest.cc`
 - Modify: BUILD.gn
 
-- [ ] **Step 1: テストを作成してコミットする**
+- [x] **Step 1: テストを作成してコミットする**
 
 テストカバレッジ: レイアウト計算、ページング境界、タイルクリック→ActivateTabAt、可視性トグル。
 
