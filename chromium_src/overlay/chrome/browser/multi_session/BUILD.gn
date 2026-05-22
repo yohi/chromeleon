@@ -1,3 +1,17 @@
 source_set("multi_session") {
-  sources = []
+  sources = [
+    "ephemeral_session_manager.cc",
+    "ephemeral_session_manager.h",
+    "ephemeral_session_manager_factory.cc",
+    "ephemeral_session_manager_factory.h",
+    "session_handle.h",
+  ]
+
+  deps = [
+    "//base",
+    "//chrome/browser/profiles:profile",
+    "//components/keyed_service/core",
+    "//content/public/browser",
+    "//url",
+  ]
 }
