@@ -1,5 +1,7 @@
 source_set("tab_grid") {
   sources = [
+    "tab_grid_view.cc",
+    "tab_grid_view.h",
     "tab_grid_tile.cc",
     "tab_grid_tile.h",
     "tab_grid_page_indicator.cc",

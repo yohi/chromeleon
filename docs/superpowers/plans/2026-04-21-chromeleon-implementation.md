@@ -2408,7 +2408,7 @@ gh pr create --draft \
 - Create: `chromium_src/overlay/chrome/browser/ui/views/tab_grid/tab_grid_view.{h,cc}`
 - Modify: `chromium_src/overlay/chrome/browser/ui/views/tab_grid/BUILD.gn`
 
-- [ ] **Step 1: TabGridView を作成してコミットする**
+- [x] **Step 1: TabGridView を作成してコミットする**
 
 設計書 §4.3 に基づく `views::View` + `TabStripModelObserver` 実装。4×3 グリッド + ページング。
 
@@ -2417,7 +2417,7 @@ git add chromium_src/overlay/chrome/browser/ui/views/tab_grid/
 git commit -m "feat(grid): TabGridView 本体を実装（N×M レイアウト + ページング）"
 ```
 
-- [ ] **Step 2: Draft PR を作成する**
+- [x] **Step 2: Draft PR を作成する**
 
 ```bash
 git push -u origin feature/phase5-task2__grid-view
