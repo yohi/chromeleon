@@ -1,20 +1,26 @@
 --- a/chrome/browser/renderer_context_menu/render_view_context_menu.cc
 +++ b/chrome/browser/renderer_context_menu/render_view_context_menu.cc
-@@ -35,1 +35,2 @@
+@@ -35,2 +35,4 @@
  #include "chrome/common/chrome_features.h"
++#include "chromium_src/overlay/chrome/browser/ui/views/multi_session_dialog/chromeleon_command_ids.h"
 +#include "chromium_src/overlay/chrome/browser/ui/views/multi_session_dialog/multi_session_open_dialog.h"
-@@ -500,2 +501,7 @@
-   // Dummy context for context menu generation
+ #include "chrome/common/url_constants.h"
+@@ -502,3 +504,10 @@
+   AppendAllExtensionItems();
 +
-+  // CHROMELEON_HOOK: Add "Open in Multiple Sessions..." to context menu
++  // CHROMELEON_HOOK: Add "Open in Multiple Sessions..." to link context menu.
 +  if (params_.link_url.is_valid()) {
-+    menu_model_.AddItem(50001, u"Open in Multiple Sessions...");
++    menu_model_.AddItemWithStringId(
++        IDC_CONTENT_CONTEXT_OPENLINK_MULTI_SESSION,
++        IDS_CONTENT_CONTEXT_OPENLINK_MULTI_SESSION);
 +  }
    AppendLinkItems();
-@@ -1200,2 +1206,6 @@
+   AppendPageItems();
+@@ -1208,2 +1216,7 @@
    switch (id) {
-+    case 50001:
-+      // CHROMELEON_HOOK: Handle "Open in Multiple Sessions..." execution
-+      multi_session::MultiSessionOpenDialog::Show(browser_, params_.link_url);
++    case IDC_CONTENT_CONTEXT_OPENLINK_MULTI_SESSION:
++      // CHROMELEON_HOOK: Handle "Open in Multiple Sessions..." execution.
++      multi_session::MultiSessionOpenDialog::Show(
++          chrome::FindBrowserWithTab(source_web_contents_), params_.link_url);
 +      return;
      case IDC_CONTENT_CONTEXT_OPENLINKNEWTAB:

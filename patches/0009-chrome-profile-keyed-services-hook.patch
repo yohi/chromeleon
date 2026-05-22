@@ -1,0 +1,22 @@
+--- a/chrome/browser/profiles/profile_impl.cc
++++ b/chrome/browser/profiles/profile_impl.cc
+@@ -50,3 +50,5 @@
+ #include "chrome/browser/profiles/profile_impl.h"
++#include "chromium_src/overlay/chrome/browser/extensions/partition_extension_autoloader/partition_extension_autoloader_factory.h"
++#include "chromium_src/overlay/chrome/browser/multi_session/ephemeral_session_manager_factory.h"
+ #include "chrome/browser/profiles/profile_impl_io_data.h"
+ #include "chrome/browser/profiles/profile_key.h"
+@@ -302,6 +304,13 @@
+   // Ensure browser-context keyed services are created for this profile.
+   BrowserContextDependencyManager::GetInstance()
+       ->CreateBrowserContextServices(this);
++
++  // CHROMELEON_HOOK: Ensure Chromeleon KeyedServices are initialized.
++  // PartitionExtensionAutoloaderFactory depends on EphemeralSessionManagerFactory
++  // via DependsOn(), so registering the former is sufficient to bring up both
++  // services in the correct dependency order.
++  extensions::PartitionExtensionAutoloaderFactory::GetInstance()
++      ->GetServiceForBrowserContext(this, /*create=*/true);
+ }
+ 
+ ProfileImpl::~ProfileImpl() {
