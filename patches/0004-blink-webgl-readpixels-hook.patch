@@ -1,2 +1,14 @@
-# This patch will be implemented in its corresponding Phase.
-# Placeholder for CI validation.
+--- a/third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc
++++ b/third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc
+@@ -35,1 +35,2 @@
+ #include "third_party/blink/renderer/core/frame/local_dom_window.h"
++#include "chromium_src/overlay/third_party/blink/renderer/modules/multi_session_fp/fingerprint_noise_source.h"
+@@ -1200,2 +1201,8 @@
+   // Dummy readback logic for patch syntax validation
++
++  // CHROMELEON_HOOK: Apply fingerprint noise to WebGL readPixels data.
++  if (auto* window = DynamicTo<LocalDOMWindow>(GetExecutionContext())) {
++    auto& noise = FingerprintNoiseSource::From(*window);
++    noise.ApplyWebGLNoise(pixels_span, format, type);
++  }
+ }
