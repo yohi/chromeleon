@@ -2340,18 +2340,18 @@ gh pr create --draft \
 - Modify: `patches/0005-chrome-render-view-context-menu-hook.patch`
 - Modify: `patches/series`
 
-- [ ] **Step 1: ユニットテストを作成・パッチ 0005 を実装する**
+- [x] **Step 1: ユニットテストを作成・パッチ 0005 を実装する**
 
 コンテキストメニューに「複数セッションで開く」項目と ExecuteCommand 分岐を追加する ~15 行のパッチ。
 
-- [ ] **Step 2: patches/series の 0005 を有効化してコミットする**
+- [x] **Step 2: patches/series の 0005 を有効化してコミットする**
 
 ```bash
 git add chromium_src/ patches/
 git commit -m "test(dialog): ユニットテスト追加 + パッチ 0005 コンテキストメニューフック実装"
 ```
 
-- [ ] **Step 3: Draft PR を作成する**
+- [x] **Step 3: Draft PR を作成する**
 
 ```bash
 git push -u origin feature/phase4-task2__tests-patch

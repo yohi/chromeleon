@@ -13,3 +13,16 @@ source_set("multi_session_dialog") {
     "//url",
   ]
 }
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [
+    "multi_session_open_dialog_unittest.cc",
+  ]
+
+  deps = [
+    ":multi_session_dialog",
+    "//chrome/test:test_support",
+    "//testing/gtest",
+  ]
+}
