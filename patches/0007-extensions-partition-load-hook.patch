@@ -11,7 +11,11 @@
 +      void (*callback)(const std::string&, const std::string&));
 --- a/chrome/browser/extensions/extension_service.cc
 +++ b/chrome/browser/extensions/extension_service.cc
-@@ -500,1 +500,19 @@
+@@ -35,1 +35,3 @@
+ #include "extensions/browser/extension_system.h"
++#include "content/public/browser/storage_partition.h"
++#include "extensions/browser/process_manager.h"
+@@ -500,1 +502,23 @@
  }
 +
 +namespace {
@@ -24,6 +28,13 @@
 +    const std::string& partition_id) {
 +  if (g_enable_extension_for_partition_callback_for_testing) {
 +    g_enable_extension_for_partition_callback_for_testing(extension_id, partition_id);
++  }
+
++  content::StoragePartition* partition =
++      profile_->GetStoragePartitionForConfig(
++          content::StoragePartitionConfig::Create(profile_, "multi_session", partition_id, true));
++  if (partition) {
++    extensions::ProcessManager::Get(profile_)->RegisterStoragePartition(partition);
 +  }
 +}
 +

@@ -8,15 +8,14 @@
 namespace multi_session {
 
 // static
-EphemeralSessionManager* EphemeralSessionManagerFactory::GetForProfile(
-    Profile* profile) {
-  return static_cast<EphemeralSessionManager*>(
+EphemeralSessionManager *
+EphemeralSessionManagerFactory::GetForProfile(Profile *profile) {
+  return static_cast<EphemeralSessionManager *>(
       GetInstance()->GetServiceForBrowserContext(profile, /*create=*/true));
 }
 
 // static
-EphemeralSessionManagerFactory*
-EphemeralSessionManagerFactory::GetInstance() {
+EphemeralSessionManagerFactory *EphemeralSessionManagerFactory::GetInstance() {
   static base::NoDestructor<EphemeralSessionManagerFactory> instance;
   return instance.get();
 }
@@ -30,9 +29,9 @@ EphemeralSessionManagerFactory::~EphemeralSessionManagerFactory() = default;
 
 std::unique_ptr<KeyedService>
 EphemeralSessionManagerFactory::BuildServiceInstanceForBrowserContext(
-    content::BrowserContext* context) const {
+    content::BrowserContext *context) const {
   return std::make_unique<EphemeralSessionManager>(
       Profile::FromBrowserContext(context));
 }
 
-}  // namespace multi_session
+} // namespace multi_session

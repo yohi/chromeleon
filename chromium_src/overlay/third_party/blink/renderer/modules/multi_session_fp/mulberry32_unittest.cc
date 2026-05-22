@@ -38,5 +38,5 @@ TEST(Mulberry32Test, ZeroSeed_ProducesNonZero) {
   EXPECT_TRUE(has_nonzero);
 }
 
-}  // namespace
-}  // namespace blink
+} // namespace
+} // namespace blink

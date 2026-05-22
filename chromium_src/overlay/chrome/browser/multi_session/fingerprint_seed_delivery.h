@@ -12,20 +12,20 @@ namespace multi_session {
 class FingerprintSeedDelivery
     : public content::WebContentsObserver,
       public content::WebContentsUserData<FingerprintSeedDelivery> {
- public:
+public:
   ~FingerprintSeedDelivery() override;
 
   // content::WebContentsObserver:
-  void RenderFrameCreated(content::RenderFrameHost* rfh) override;
+  void RenderFrameCreated(content::RenderFrameHost *rfh) override;
 
- private:
+private:
   friend class content::WebContentsUserData<FingerprintSeedDelivery>;
 
-  explicit FingerprintSeedDelivery(content::WebContents* wc);
+  explicit FingerprintSeedDelivery(content::WebContents *wc);
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };
 
-}  // namespace multi_session
+} // namespace multi_session
 
-#endif  // CHROMIUM_SRC_OVERLAY_CHROME_BROWSER_MULTI_SESSION_FINGERPRINT_SEED_DELIVERY_H_
+#endif // CHROMIUM_SRC_OVERLAY_CHROME_BROWSER_MULTI_SESSION_FINGERPRINT_SEED_DELIVERY_H_

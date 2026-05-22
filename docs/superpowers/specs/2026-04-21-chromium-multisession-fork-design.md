@@ -756,16 +756,18 @@ void PartitionExtensionAutoloader::OnPartitionCreated(
 
 | # | ファイル | 行数目安 | 目的 |
 |---|---|---|---|
-| 0001 | `content/browser/storage_partition_impl_map.cc` | ~5 | 生成時に `EphemeralSessionManager` へ通知 |
+| ~~0001~~ | ~~`content/browser/storage_partition_impl_map.cc`~~ | — | **廃止**: `EphemeralSessionManager::CreateSessionForNewTab()` が `GetStoragePartition()` を呼ぶことで自己完結するため不要と判断し削除 |
 | 0002 | `third_party/blink/renderer/core/frame/navigator.cc` | ~3 | `Navigator::webdriver()` 定数化 |
 | 0003 | `third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.cc` | ~8 | readback 後にノイズ適用 |
 | 0004 | `third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc` | ~8 | readPixels 後にノイズ適用 |
-| 0005 | `chrome/browser/renderer_context_menu/render_view_context_menu.cc` | ~15 | メニュー項目 + コマンド分岐 |
+| 0005 | `chrome/browser/renderer_context_menu/render_view_context_menu.cc` | ~15 | メニュー項目（`IDC_CONTENT_CONTEXT_OPENLINK_MULTI_SESSION`）+ コマンド分岐 |
 | 0006 | `chrome/browser/ui/views/toolbar/toolbar_view.cc` | ~5 | Grid toggle button 注入 |
 | 0007 | `chrome/browser/extensions/extension_service.cc` | ~10 | `EnableExtensionForPartition` スタブ |
+| 0008 | `chrome/browser/ui/tab_helpers.cc` | ~5 | `FingerprintSeedDelivery::CreateForWebContents` を全タブに attach |
+| 0009 | `chrome/browser/profiles/profile_impl.cc` | ~8 | `PartitionExtensionAutoloaderFactory` 起動トリガー（`DependsOn` チェーンで `EphemeralSessionManagerFactory` も連鎖起動） |
 | `overlay_gn.patch` | `chrome/browser/BUILD.gn`, `third_party/blink/renderer/modules/BUILD.gn` | ~10 | overlay ターゲット接続 |
 
-**合計: ~65行の上流改変**。全て既存関数末尾への挿入、または新コマンドID分岐で、上流ロジックの書き換えはゼロ。
+**合計: ~75行の上流改変**（0001 廃止・0008/0009 追加により改訂）。全て既存関数末尾への挿入、または新コマンドID分岐で、上流ロジックの書き換えはゼロ。
 
 ## 5. ビルド・テスト手順
 
@@ -923,11 +925,11 @@ jobs:
 | Spec | 対象 | 依存 |
 |---|---|---|
 | Spec-A | Devcontainer + 骨格ビルド（空overlay + GN patch + `apply_patches.py` + CI両workflow） | — |
-| Spec-B | EphemeralSessionManager + フック0001 | Spec-A |
-| Spec-C | FingerprintNoiseSource + Mojo + フック0002/0003/0004 | Spec-B |
+| Spec-B | EphemeralSessionManager（フック0001は廃止・不要） | Spec-A |
+| Spec-C | FingerprintNoiseSource + Mojo + フック0002/0003/0004/0008 | Spec-B |
 | Spec-D | MultiSessionOpenDialog + フック0005 | Spec-B |
 | Spec-E | TabGridView + フック0006 + settings UI | Spec-A |
-| Spec-F | PartitionExtensionAutoloader + フック0007 | Spec-B |
+| Spec-F | PartitionExtensionAutoloader + フック0007/0009 | Spec-B |
 
 ## 8. 設計上の確定事項まとめ
 
