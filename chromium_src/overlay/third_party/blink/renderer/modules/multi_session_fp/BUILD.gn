@@ -1,3 +1,15 @@
 source_set("multi_session_fp") {
-  sources = []
+  sources = [
+    "fingerprint_noise_source.cc",
+    "fingerprint_noise_source.h",
+    "mulberry32.h",
+  ]
+
+  deps = [
+    "//chromium_src/overlay/public/mojom/multi_session:fingerprint_mojom_blink",
+    "//mojo/public/cpp/bindings",
+    "//third_party/blink/renderer/core",
+    "//third_party/blink/renderer/modules",
+    "//third_party/blink/renderer/platform",
+  ]
 }
