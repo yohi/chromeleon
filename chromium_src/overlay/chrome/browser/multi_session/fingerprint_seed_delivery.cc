@@ -6,8 +6,9 @@
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/storage_partition.h"
-// TODO(Phase 3): Mojo remote include を追加
-// #include "chromium_src/overlay/public/mojom/multi_session/fingerprint.mojom.h"
+#include "chromium_src/overlay/public/mojom/multi_session/fingerprint.mojom.h"
+#include "mojo/public/cpp/bindings/associated_remote.h"
+#include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 
 namespace multi_session {
 
@@ -35,10 +36,9 @@ void FingerprintSeedDelivery::RenderFrameCreated(
   if (!seed.has_value())
     return;  // 非エフェメラル（既定 Profile）は対象外
 
-  // TODO(Phase 3): Mojo で Renderer に seed を送信
-  // mojo::AssociatedRemote<blink::mojom::FingerprintSeedReceiver> remote;
-  // rfh->GetRemoteAssociatedInterfaces()->GetInterface(&remote);
-  // remote->SetSeed(*seed);
+  mojo::AssociatedRemote<blink::mojom::FingerprintSeedReceiver> remote;
+  rfh->GetRemoteAssociatedInterfaces()->GetInterface(&remote);
+  remote->SetSeed(*seed);
 }
 
 }  // namespace multi_session

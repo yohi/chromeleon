@@ -1689,7 +1689,7 @@ gh pr create --draft \
 - Create: `chromium_src/overlay/public/mojom/multi_session/fingerprint.mojom`
 - Modify: `chromium_src/overlay/public/mojom/multi_session/BUILD.gn`
 
-- [ ] **Step 1: Mojo IDL を作成する**
+- [x] **Step 1: Mojo IDL を作成する**
 
 ```mojom
 // chromium_src/overlay/public/mojom/multi_session/fingerprint.mojom
@@ -1702,7 +1702,7 @@ interface FingerprintSeedReceiver {
 };
 ```
 
-- [ ] **Step 2: BUILD.gn を更新する**
+- [x] **Step 2: BUILD.gn を更新する**
 
 ```gn
 # chromium_src/overlay/public/mojom/multi_session/BUILD.gn
@@ -1713,14 +1713,14 @@ mojom("fingerprint_mojom") {
 }
 ```
 
-- [ ] **Step 3: コミットする**
+- [x] **Step 3: コミットする**
 
 ```bash
 git add chromium_src/overlay/public/mojom/
 git commit -m "feat(fingerprint): Mojo IDL FingerprintSeedReceiver を定義"
 ```
 
-- [ ] **Step 4: Draft PR を作成する**
+- [x] **Step 4: Draft PR を作成する**
 
 ```bash
 git push -u origin feature/phase3-task1__mojo-idl
@@ -1746,7 +1746,7 @@ gh pr create --draft \
 - Create: `chromium_src/overlay/third_party/blink/renderer/modules/multi_session_fp/mulberry32.h`
 - Modify: `chromium_src/overlay/third_party/blink/renderer/modules/multi_session_fp/BUILD.gn`
 
-- [ ] **Step 1: Mulberry32 PRNG を作成する**
+- [x] **Step 1: Mulberry32 PRNG を作成する**
 
 ```cpp
 // chromium_src/overlay/third_party/blink/renderer/modules/multi_session_fp/mulberry32.h
@@ -1779,7 +1779,7 @@ class Mulberry32 {
 #endif  // CHROMIUM_SRC_OVERLAY_BLINK_MODULES_MULTI_SESSION_FP_MULBERRY32_H_
 ```
 
-- [ ] **Step 2: FingerprintNoiseSource ヘッダを作成する**
+- [x] **Step 2: FingerprintNoiseSource ヘッダを作成する**
 
 ```cpp
 // chromium_src/overlay/third_party/blink/renderer/modules/multi_session_fp/fingerprint_noise_source.h
@@ -1836,7 +1836,7 @@ class MODULES_EXPORT FingerprintNoiseSource final
 #endif  // CHROMIUM_SRC_OVERLAY_BLINK_MODULES_MULTI_SESSION_FP_FINGERPRINT_NOISE_SOURCE_H_
 ```
 
-- [ ] **Step 3: FingerprintNoiseSource ソースを作成する**
+- [x] **Step 3: FingerprintNoiseSource ソースを作成する**
 
 ```cpp
 // chromium_src/overlay/third_party/blink/renderer/modules/multi_session_fp/fingerprint_noise_source.cc
@@ -1913,7 +1913,7 @@ void FingerprintNoiseSource::Trace(Visitor* visitor) const {
 }  // namespace blink
 ```
 
-- [ ] **Step 4: BUILD.gn を更新する**
+- [x] **Step 4: BUILD.gn を更新する**
 
 ```gn
 # chromium_src/overlay/third_party/blink/renderer/modules/multi_session_fp/BUILD.gn
@@ -1934,14 +1934,14 @@ source_set("multi_session_fp") {
 }
 ```
 
-- [ ] **Step 5: コミットする**
+- [x] **Step 5: コミットする**
 
 ```bash
 git add chromium_src/overlay/third_party/blink/renderer/modules/multi_session_fp/
 git commit -m "feat(fingerprint): FingerprintNoiseSource Blink Supplement + Mulberry32 PRNG を実装"
 ```
 
-- [ ] **Step 6: Draft PR を作成する**
+- [x] **Step 6: Draft PR を作成する**
 
 ```bash
 git push -u origin feature/phase3-task2__noise-source
@@ -1967,7 +1967,7 @@ gh pr create --draft \
 
 - Modify: `chromium_src/overlay/chrome/browser/multi_session/fingerprint_seed_delivery.cc`
 
-- [ ] **Step 1: FingerprintSeedDelivery の TODO を解消する**
+- [x] **Step 1: FingerprintSeedDelivery の TODO を解消する**
 
 Phase 2 で `TODO(Phase 3)` としていた Mojo 送信コードのコメントを解除し、実際の include を追加する:
 
@@ -1983,14 +1983,14 @@ Phase 2 で `TODO(Phase 3)` としていた Mojo 送信コードのコメント�
   remote->SetSeed(*seed);
 ```
 
-- [ ] **Step 2: コミットする**
+- [x] **Step 2: コミットする**
 
 ```bash
 git add chromium_src/overlay/chrome/browser/multi_session/fingerprint_seed_delivery.cc
 git commit -m "feat(fingerprint): FingerprintSeedDelivery の Mojo 送信を接続"
 ```
 
-- [ ] **Step 3: Draft PR を作成する**
+- [x] **Step 3: Draft PR を作成する**
 
 ```bash
 git push -u origin feature/phase3-task3__mojo-wiring
@@ -2015,7 +2015,7 @@ gh pr create --draft \
 - Create: `chromium_src/overlay/third_party/blink/renderer/modules/multi_session_fp/fingerprint_noise_source_unittest.cc`
 - Modify: `chromium_src/overlay/third_party/blink/renderer/modules/multi_session_fp/BUILD.gn`
 
-- [ ] **Step 1: Mulberry32 ユニットテストを作成する**
+- [x] **Step 1: Mulberry32 ユニットテストを作成する**
 
 ```cpp
 // .../multi_session_fp/mulberry32_unittest.cc
@@ -2062,7 +2062,7 @@ TEST(Mulberry32Test, ZeroSeed_ProducesNonZero) {
 }  // namespace blink
 ```
 
-- [ ] **Step 2: FingerprintNoiseSource ユニットテストを作成する**
+- [x] **Step 2: FingerprintNoiseSource ユニットテストを作成する**
 
 ```cpp
 // .../multi_session_fp/fingerprint_noise_source_unittest.cc
@@ -2075,7 +2075,7 @@ TEST(Mulberry32Test, ZeroSeed_ProducesNonZero) {
 // Blink テストインフラの正確な API は実装時に確認すること。
 ```
 
-- [ ] **Step 3: BUILD.gn にテストターゲットを追加する**
+- [x] **Step 3: BUILD.gn にテストターゲットを追加する**
 
 ```gn
 test("fingerprint_noise_source_unittest") {
@@ -2092,14 +2092,14 @@ test("fingerprint_noise_source_unittest") {
 }
 ```
 
-- [ ] **Step 4: コミットする**
+- [x] **Step 4: コミットする**
 
 ```bash
 git add chromium_src/overlay/third_party/blink/renderer/modules/multi_session_fp/
 git commit -m "test(fingerprint): Mulberry32 + FingerprintNoiseSource のユニットテストを追加"
 ```
 
-- [ ] **Step 5: Draft PR を作成する**
+- [x] **Step 5: Draft PR を作成する**
 
 ```bash
 git push -u origin feature/phase3-task4__unit-tests
@@ -2125,7 +2125,7 @@ gh pr create --draft \
 - Modify: `patches/0004-blink-webgl-readpixels-hook.patch`
 - Modify: `patches/series`
 
-- [ ] **Step 1: パッチ 0002 — navigator.webdriver フック**
+- [x] **Step 1: パッチ 0002 — navigator.webdriver フック**
 
 ```diff
 # patches/0002-blink-navigator-webdriver-hook.patch
@@ -2138,7 +2138,7 @@ gh pr create --draft \
  }
 ```
 
-- [ ] **Step 2: パッチ 0003 — Canvas readback フック**
+- [x] **Step 2: パッチ 0003 — Canvas readback フック**
 
 ```diff
 # patches/0003-blink-canvas-readback-hook.patch
@@ -2152,7 +2152,7 @@ gh pr create --draft \
 +  }
 ```
 
-- [ ] **Step 3: パッチ 0004 — WebGL readPixels フック**
+- [x] **Step 3: パッチ 0004 — WebGL readPixels フック**
 
 ```diff
 # patches/0004-blink-webgl-readpixels-hook.patch
@@ -2166,16 +2166,16 @@ gh pr create --draft \
 +  }
 ```
 
-- [ ] **Step 4: patches/series を更新する（0002〜0004 有効化）**
+- [x] **Step 4: patches/series を更新する（0002〜0004 有効化）**
 
-- [ ] **Step 5: コミットする**
+- [x] **Step 5: コミットする**
 
 ```bash
 git add patches/
 git commit -m "feat(fingerprint): パッチ 0002/0003/0004 を実装（webdriver, canvas, webgl フック）"
 ```
 
-- [ ] **Step 6: Draft PR を作成する**
+- [x] **Step 6: Draft PR を作成する**
 
 ```bash
 git push -u origin feature/phase3-task5__patches-0002-0004

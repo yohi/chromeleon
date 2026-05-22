@@ -1,2 +1,10 @@
-# This patch will be implemented in its corresponding Phase.
-# Placeholder for CI validation.
+--- a/third_party/blink/renderer/core/frame/navigator.cc
++++ b/third_party/blink/renderer/core/frame/navigator.cc
+@@ -20,1 +20,2 @@
+ #include "third_party/blink/renderer/core/loader/frame_loader.h"
++#include "chromium_src/overlay/third_party/blink/renderer/modules/multi_session_fp/fingerprint_noise_source.h"
+@@ -100,2 +101,3 @@
+-  return true;
++  // CHROMELEON_HOOK: Always return false to mask automation detection.
++  return FingerprintNoiseSource::WebDriverEnabled();
+ }
