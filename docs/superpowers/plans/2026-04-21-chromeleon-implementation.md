@@ -2125,7 +2125,7 @@ gh pr create --draft \
 - Modify: `patches/0004-blink-webgl-readpixels-hook.patch`
 - Modify: `patches/series`
 
-- [ ] **Step 1: パッチ 0002 — navigator.webdriver フック**
+- [x] **Step 1: パッチ 0002 — navigator.webdriver フック**
 
 ```diff
 # patches/0002-blink-navigator-webdriver-hook.patch
@@ -2138,7 +2138,7 @@ gh pr create --draft \
  }
 ```
 
-- [ ] **Step 2: パッチ 0003 — Canvas readback フック**
+- [x] **Step 2: パッチ 0003 — Canvas readback フック**
 
 ```diff
 # patches/0003-blink-canvas-readback-hook.patch
@@ -2152,7 +2152,7 @@ gh pr create --draft \
 +  }
 ```
 
-- [ ] **Step 3: パッチ 0004 — WebGL readPixels フック**
+- [x] **Step 3: パッチ 0004 — WebGL readPixels フック**
 
 ```diff
 # patches/0004-blink-webgl-readpixels-hook.patch
@@ -2166,16 +2166,16 @@ gh pr create --draft \
 +  }
 ```
 
-- [ ] **Step 4: patches/series を更新する（0002〜0004 有効化）**
+- [x] **Step 4: patches/series を更新する（0002〜0004 有効化）**
 
-- [ ] **Step 5: コミットする**
+- [x] **Step 5: コミットする**
 
 ```bash
 git add patches/
 git commit -m "feat(fingerprint): パッチ 0002/0003/0004 を実装（webdriver, canvas, webgl フック）"
 ```
 
-- [ ] **Step 6: Draft PR を作成する**
+- [x] **Step 6: Draft PR を作成する**
 
 ```bash
 git push -u origin feature/phase3-task5__patches-0002-0004
