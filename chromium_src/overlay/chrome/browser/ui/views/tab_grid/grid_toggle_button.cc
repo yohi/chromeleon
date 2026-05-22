@@ -5,7 +5,7 @@
 
 namespace multi_session {
 
-GridToggleButton::GridToggleButton(BrowserView* browser_view,
+GridToggleButton::GridToggleButton(BrowserView *browser_view,
                                    PressedCallback callback)
     : views::LabelButton(std::move(callback), u"Grid"),
       browser_view_(browser_view) {
@@ -15,4 +15,4 @@ GridToggleButton::GridToggleButton(BrowserView* browser_view,
 
 GridToggleButton::~GridToggleButton() = default;
 
-}  // namespace multi_session
+} // namespace multi_session

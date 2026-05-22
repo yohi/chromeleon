@@ -12,13 +12,11 @@ class Label;
 namespace multi_session {
 
 class TabGridTile : public views::Button {
- public:
-  TabGridTile(int tab_index,
-              const std::u16string& title,
-              bool is_active,
+public:
+  TabGridTile(int tab_index, const std::u16string &title, bool is_active,
               PressedCallback callback);
-  TabGridTile(const TabGridTile&) = delete;
-  TabGridTile& operator=(const TabGridTile&) = delete;
+  TabGridTile(const TabGridTile &) = delete;
+  TabGridTile &operator=(const TabGridTile &) = delete;
   ~TabGridTile() override;
 
   int tab_index() const { return tab_index_; }
@@ -27,7 +25,7 @@ class TabGridTile : public views::Button {
   // views::View:
   void OnThemeChanged() override;
 
- private:
+private:
   void UpdateBorder();
 
   int tab_index_;
@@ -35,6 +33,6 @@ class TabGridTile : public views::Button {
   raw_ptr<views::Label> title_label_ = nullptr;
 };
 
-}  // namespace multi_session
+} // namespace multi_session
 
-#endif  // CHROMIUM_SRC_OVERLAY_CHROME_BROWSER_UI_VIEWS_TAB_GRID_TAB_GRID_TILE_H_
+#endif // CHROMIUM_SRC_OVERLAY_CHROME_BROWSER_UI_VIEWS_TAB_GRID_TAB_GRID_TILE_H_

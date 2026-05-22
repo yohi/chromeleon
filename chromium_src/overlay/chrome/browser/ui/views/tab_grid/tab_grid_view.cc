@@ -16,15 +16,13 @@
 
 namespace multi_session {
 
-TabGridView::TabGridView(BrowserView* browser_view)
+TabGridView::TabGridView(BrowserView *browser_view)
     : browser_view_(browser_view) {
   SetLayoutManager(std::make_unique<views::BoxLayout>(
-      views::BoxLayout::Orientation::kVertical,
-      gfx::Insets(16), 16));
+      views::BoxLayout::Orientation::kVertical, gfx::Insets(16), 16));
 
-  auto indicator = std::make_unique<TabGridPageIndicator>(
-      base::BindRepeating(&TabGridView::OnPageButtonClicked,
-                          base::Unretained(this)));
+  auto indicator = std::make_unique<TabGridPageIndicator>(base::BindRepeating(
+      &TabGridView::OnPageButtonClicked, base::Unretained(this)));
   page_indicator_ = AddChildView(std::move(indicator));
 
   if (browser_view_ && browser_view_->browser()) {
@@ -47,18 +45,16 @@ void TabGridView::ToggleVisibility() {
   }
 }
 
-void TabGridView::Layout(PassKey pass_key) {
-  views::View::Layout(pass_key);
-}
+void TabGridView::Layout(PassKey pass_key) { views::View::Layout(pass_key); }
 
-gfx::Size TabGridView::CalculatePreferredSize(const views::SizeBounds& bounds) const {
+gfx::Size
+TabGridView::CalculatePreferredSize(const views::SizeBounds &bounds) const {
   return views::View::CalculatePreferredSize(bounds);
 }
 
-void TabGridView::OnTabStripModelChanged(
-    TabStripModel* model,
-    const TabStripModelChange& change,
-    const TabStripSelectionChange& sel) {
+void TabGridView::OnTabStripModelChanged(TabStripModel *model,
+                                         const TabStripModelChange &change,
+                                         const TabStripSelectionChange &sel) {
   if (GetVisible()) {
     BuildPage(current_page_);
   }
@@ -67,11 +63,12 @@ void TabGridView::OnTabStripModelChanged(
 void TabGridView::BuildPage(int page_index) {
   tiles_.clear();
 
-  TabStripModel* model = browser_view_->browser()->tab_strip_model();
+  TabStripModel *model = browser_view_->browser()->tab_strip_model();
   int total_tabs = model->count();
   int page_size = rows_ * cols_;
   int total_pages = (total_tabs + page_size - 1) / page_size;
-  if (total_pages == 0) total_pages = 1;
+  if (total_pages == 0)
+    total_pages = 1;
 
   if (page_index >= total_pages) {
     page_index = total_pages - 1;
@@ -88,10 +85,12 @@ void TabGridView::BuildPage(int page_index) {
   }
 
   auto container = std::make_unique<views::View>();
-  auto* layout = container->SetLayoutManager(std::make_unique<views::TableLayout>());
+  auto *layout =
+      container->SetLayoutManager(std::make_unique<views::TableLayout>());
   for (int i = 0; i < cols_; ++i) {
-    layout->AddColumn(views::LayoutAlignment::kFill, views::LayoutAlignment::kFill,
-                      1.0f, views::TableLayout::ColumnSize::kUsePreferred, 0, 0);
+    layout->AddColumn(views::LayoutAlignment::kFill,
+                      views::LayoutAlignment::kFill, 1.0f,
+                      views::TableLayout::ColumnSize::kUsePreferred, 0, 0);
   }
   for (int i = 0; i < rows_; ++i) {
     layout->AddRows(1, 1.0f);
@@ -103,7 +102,7 @@ void TabGridView::BuildPage(int page_index) {
   for (int i = 0; i < page_size; ++i) {
     int tab_idx = start_tab + i;
     if (tab_idx < total_tabs) {
-      content::WebContents* web_contents = model->GetWebContentsAt(tab_idx);
+      content::WebContents *web_contents = model->GetWebContentsAt(tab_idx);
       std::u16string title = web_contents->GetTitle();
       if (title.empty()) {
         title = u"Untitled";
@@ -126,12 +125,11 @@ void TabGridView::BuildPage(int page_index) {
 }
 
 void TabGridView::OnTileClicked(int tab_index) {
-  TabStripModel* model = browser_view_->browser()->tab_strip_model();
+  TabStripModel *model = browser_view_->browser()->tab_strip_model();
   if (tab_index >= 0 && tab_index < model->count()) {
-    model->ActivateTabAt(
-        tab_index,
-        TabStripUserGestureDetails(
-            TabStripUserGestureDetails::GestureType::kOther));
+    model->ActivateTabAt(tab_index,
+                         TabStripUserGestureDetails(
+                             TabStripUserGestureDetails::GestureType::kOther));
     SetVisible(false);
   }
 }
@@ -140,4 +138,4 @@ void TabGridView::OnPageButtonClicked(int delta) {
   BuildPage(current_page_ + delta);
 }
 
-}  // namespace multi_session
+} // namespace multi_session

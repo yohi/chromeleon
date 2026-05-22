@@ -17,3 +17,17 @@ source_set("tab_grid") {
     "//ui/views",
   ]
 }
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [
+    "tab_grid_view_unittest.cc",
+  ]
+
+  deps = [
+    ":tab_grid",
+    "//chrome/test:test_support",
+    "//testing/gtest",
+  ]
+}
+

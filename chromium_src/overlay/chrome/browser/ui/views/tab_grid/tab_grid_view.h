@@ -16,27 +16,33 @@ namespace multi_session {
 class TabGridTile;
 class TabGridPageIndicator;
 
-class TabGridView : public views::View,
-                    public TabStripModelObserver {
- public:
-  explicit TabGridView(BrowserView* browser_view);
-  TabGridView(const TabGridView&) = delete;
-  TabGridView& operator=(const TabGridView&) = delete;
+class TabGridView : public views::View, public TabStripModelObserver {
+  friend class TabGridViewTest;
+
+public:
+  explicit TabGridView(BrowserView *browser_view);
+  TabGridView(const TabGridView &) = delete;
+  TabGridView &operator=(const TabGridView &) = delete;
   ~TabGridView() override;
 
   void ToggleVisibility();
 
   // views::View:
   void Layout(PassKey) override;
-  gfx::Size CalculatePreferredSize(const views::SizeBounds& bounds) const override;
+  gfx::Size
+  CalculatePreferredSize(const views::SizeBounds &bounds) const override;
 
   // TabStripModelObserver:
-  void OnTabStripModelChanged(
-      TabStripModel* model,
-      const TabStripModelChange& change,
-      const TabStripSelectionChange& sel) override;
+  void OnTabStripModelChanged(TabStripModel *model,
+                              const TabStripModelChange &change,
+                              const TabStripSelectionChange &sel) override;
 
- private:
+  int current_page() const { return current_page_; }
+  const std::vector<raw_ptr<TabGridTile>> &tiles() const { return tiles_; }
+  views::View *tiles_container() { return tiles_container_; }
+  TabGridPageIndicator *page_indicator() { return page_indicator_; }
+
+private:
   void BuildPage(int page_index);
   void OnTileClicked(int tab_index);
   void OnPageButtonClicked(int delta);
@@ -51,6 +57,6 @@ class TabGridView : public views::View,
   int current_page_ = 0;
 };
 
-}  // namespace multi_session
+} // namespace multi_session
 
-#endif  // CHROMIUM_SRC_OVERLAY_CHROME_BROWSER_UI_VIEWS_TAB_GRID_TAB_GRID_VIEW_H_
+#endif // CHROMIUM_SRC_OVERLAY_CHROME_BROWSER_UI_VIEWS_TAB_GRID_TAB_GRID_VIEW_H_
