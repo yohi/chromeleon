@@ -2440,14 +2440,14 @@ gh pr create --draft \
 - Modify: `patches/0006-chrome-browser-view-grid-toggle-hook.patch`
 - Modify: `patches/series`
 
-- [ ] **Step 1: GridToggleButton + パッチ 0006 を実装してコミットする**
+- [x] **Step 1: GridToggleButton + パッチ 0006 を実装してコミットする**
 
 ```bash
 git add chromium_src/ patches/
 git commit -m "feat(grid): GridToggleButton + パッチ 0006 ツールバーフックを実装"
 ```
 
-- [ ] **Step 2: Draft PR を作成する**
+- [x] **Step 2: Draft PR を作成する**
 
 ```bash
 git push -u origin feature/phase5-task3__toggle-button-patch
