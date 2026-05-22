@@ -1,3 +1,32 @@
 source_set("multi_session") {
-  sources = []
+  sources = [
+    "ephemeral_session_manager.cc",
+    "ephemeral_session_manager.h",
+    "ephemeral_session_manager_factory.cc",
+    "ephemeral_session_manager_factory.h",
+    "fingerprint_seed_delivery.cc",
+    "fingerprint_seed_delivery.h",
+    "session_handle.h",
+  ]
+
+  deps = [
+    "//base",
+    "//chrome/browser/profiles:profile",
+    "//components/keyed_service/core",
+    "//content/public/browser",
+    "//url",
+  ]
+}
+
+test("ephemeral_session_manager_unittest") {
+  sources = [
+    "ephemeral_session_manager_unittest.cc",
+  ]
+
+  deps = [
+    ":multi_session",
+    "//chrome/test:test_support",
+    "//content/public/test:test_support",
+    "//testing/gtest",
+  ]
 }

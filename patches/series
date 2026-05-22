@@ -2,7 +2,7 @@
 # 各パッチは対応する Phase で実装を行う。
 # Phase 1 時点では全て空スタブ。
 #
-# 0001-content-storage-partition-hook.patch
+0001-content-storage-partition-hook.patch
 # 0002-blink-navigator-webdriver-hook.patch
 # 0003-blink-canvas-readback-hook.patch
 # 0004-blink-webgl-readpixels-hook.patch
