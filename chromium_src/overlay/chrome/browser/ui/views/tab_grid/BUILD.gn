@@ -1,3 +1,33 @@
 source_set("tab_grid") {
-  sources = []
+  sources = [
+    "grid_toggle_button.cc",
+    "grid_toggle_button.h",
+    "tab_grid_view.cc",
+    "tab_grid_view.h",
+    "tab_grid_tile.cc",
+    "tab_grid_tile.h",
+    "tab_grid_page_indicator.cc",
+    "tab_grid_page_indicator.h",
+  ]
+
+  deps = [
+    "//base",
+    "//chrome/browser/ui",
+    "//ui/gfx",
+    "//ui/views",
+  ]
 }
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [
+    "tab_grid_view_unittest.cc",
+  ]
+
+  deps = [
+    ":tab_grid",
+    "//chrome/test:test_support",
+    "//testing/gtest",
+  ]
+}
+

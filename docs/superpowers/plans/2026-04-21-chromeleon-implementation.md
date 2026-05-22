@@ -2379,14 +2379,14 @@ gh pr create --draft \
 - Create: `chromium_src/overlay/chrome/browser/ui/views/tab_grid/tab_grid_tile.{h,cc}`
 - Create: `chromium_src/overlay/chrome/browser/ui/views/tab_grid/tab_grid_page_indicator.{h,cc}`
 
-- [ ] **Step 1: TabGridTile + PageIndicator を作成・コミットする**
+- [x] **Step 1: TabGridTile + PageIndicator を作成・コミットする**
 
 ```bash
 git add chromium_src/overlay/chrome/browser/ui/views/tab_grid/
 git commit -m "feat(grid): TabGridTile + TabGridPageIndicator を実装"
 ```
 
-- [ ] **Step 2: Draft PR を作成する**
+- [x] **Step 2: Draft PR を作成する**
 
 ```bash
 git push -u origin feature/phase5-task1__grid-tile
@@ -2408,7 +2408,7 @@ gh pr create --draft \
 - Create: `chromium_src/overlay/chrome/browser/ui/views/tab_grid/tab_grid_view.{h,cc}`
 - Modify: `chromium_src/overlay/chrome/browser/ui/views/tab_grid/BUILD.gn`
 
-- [ ] **Step 1: TabGridView を作成してコミットする**
+- [x] **Step 1: TabGridView を作成してコミットする**
 
 設計書 §4.3 に基づく `views::View` + `TabStripModelObserver` 実装。4×3 グリッド + ページング。
 
@@ -2417,7 +2417,7 @@ git add chromium_src/overlay/chrome/browser/ui/views/tab_grid/
 git commit -m "feat(grid): TabGridView 本体を実装（N×M レイアウト + ページング）"
 ```
 
-- [ ] **Step 2: Draft PR を作成する**
+- [x] **Step 2: Draft PR を作成する**
 
 ```bash
 git push -u origin feature/phase5-task2__grid-view
@@ -2440,14 +2440,14 @@ gh pr create --draft \
 - Modify: `patches/0006-chrome-browser-view-grid-toggle-hook.patch`
 - Modify: `patches/series`
 
-- [ ] **Step 1: GridToggleButton + パッチ 0006 を実装してコミットする**
+- [x] **Step 1: GridToggleButton + パッチ 0006 を実装してコミットする**
 
 ```bash
 git add chromium_src/ patches/
 git commit -m "feat(grid): GridToggleButton + パッチ 0006 ツールバーフックを実装"
 ```
 
-- [ ] **Step 2: Draft PR を作成する**
+- [x] **Step 2: Draft PR を作成する**
 
 ```bash
 git push -u origin feature/phase5-task3__toggle-button-patch
@@ -2469,7 +2469,7 @@ gh pr create --draft \
 - Create: `chromium_src/overlay/chrome/browser/ui/views/tab_grid/tab_grid_view_unittest.cc`
 - Modify: BUILD.gn
 
-- [ ] **Step 1: テストを作成してコミットする**
+- [x] **Step 1: テストを作成してコミットする**
 
 テストカバレッジ: レイアウト計算、ページング境界、タイルクリック→ActivateTabAt、可視性トグル。
 
@@ -2478,7 +2478,7 @@ git add chromium_src/overlay/chrome/browser/ui/views/tab_grid/
 git commit -m "test(grid): TabGridView のユニットテストを追加"
 ```
 
-- [ ] **Step 2: Draft PR を作成する**
+- [x] **Step 2: Draft PR を作成する**
 
 ```bash
 git push -u origin feature/phase5-task4__unit-tests
