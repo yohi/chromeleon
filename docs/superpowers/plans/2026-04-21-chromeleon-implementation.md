@@ -1967,7 +1967,7 @@ gh pr create --draft \
 
 - Modify: `chromium_src/overlay/chrome/browser/multi_session/fingerprint_seed_delivery.cc`
 
-- [ ] **Step 1: FingerprintSeedDelivery の TODO を解消する**
+- [x] **Step 1: FingerprintSeedDelivery の TODO を解消する**
 
 Phase 2 で `TODO(Phase 3)` としていた Mojo 送信コードのコメントを解除し、実際の include を追加する:
 
@@ -1983,14 +1983,14 @@ Phase 2 で `TODO(Phase 3)` としていた Mojo 送信コードのコメント�
   remote->SetSeed(*seed);
 ```
 
-- [ ] **Step 2: コミットする**
+- [x] **Step 2: コミットする**
 
 ```bash
 git add chromium_src/overlay/chrome/browser/multi_session/fingerprint_seed_delivery.cc
 git commit -m "feat(fingerprint): FingerprintSeedDelivery の Mojo 送信を接続"
 ```
 
-- [ ] **Step 3: Draft PR を作成する**
+- [x] **Step 3: Draft PR を作成する**
 
 ```bash
 git push -u origin feature/phase3-task3__mojo-wiring
