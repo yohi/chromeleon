@@ -1621,7 +1621,7 @@ gh pr create --draft \
 - Modify: `patches/0001-content-storage-partition-hook.patch`
 - Modify: `patches/series`
 
-- [ ] **Step 1: パッチ 0001 を実装する**
+- [x] **Step 1: パッチ 0001 を実装する**
 
 ```diff
 # patches/0001-content-storage-partition-hook.patch
@@ -1639,7 +1639,7 @@ gh pr create --draft \
 
 > **注意:** 実際の行番号は `config/chromium_version` で指定されたタグのソースで確認し、`XXX` を置換すること。
 
-- [ ] **Step 2: patches/series のコメントを解除する**
+- [x] **Step 2: patches/series のコメントを解除する**
 
 ```text
 # patches/series
@@ -1652,14 +1652,14 @@ gh pr create --draft \
 # 0007-extensions-partition-load-hook.patch
 ```
 
-- [ ] **Step 3: コミットする**
+- [x] **Step 3: コミットする**
 
 ```bash
 git add patches/
 git commit -m "feat(session): パッチ 0001 StoragePartition フックを実装"
 ```
 
-- [ ] **Step 4: Draft PR を作成する**
+- [x] **Step 4: Draft PR を作成する**
 
 ```bash
 git push -u origin feature/phase2-task5__patch-0001
