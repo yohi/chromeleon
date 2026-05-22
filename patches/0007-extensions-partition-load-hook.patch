@@ -29,7 +29,7 @@
 +  if (g_enable_extension_for_partition_callback_for_testing) {
 +    g_enable_extension_for_partition_callback_for_testing(extension_id, partition_id);
 +  }
-+  
+
 +  content::StoragePartition* partition =
 +      profile_->GetStoragePartitionForConfig(
 +          content::StoragePartitionConfig::Create(profile_, "multi_session", partition_id, true));

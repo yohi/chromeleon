@@ -1,4 +1,26 @@
 --- a/chrome/browser/renderer_context_menu/render_view_context_menu.cc
+diff --git a/chrome/app/generated_resources.grd b/chrome/app/generated_resources.grd
+--- a/chrome/app/generated_resources.grd
++++ b/chrome/app/generated_resources.grd
+@@ -1800,3 +1800,6 @@
+       <message name="IDS_CONTENT_CONTEXT_OPENLINKNEWTAB" desc="Context menu item to open a link in a new tab.">
+         Open link in new tab
+       </message>
++      <message name="IDS_CONTENT_CONTEXT_OPENLINK_MULTI_SESSION" desc="Context menu item to open a link in multiple sessions.">
++        Open in Multiple Sessions...
++      </message>
+diff --git a/chromium_src/overlay/chrome/app/chromeleon_strings.grdp b/chromium_src/overlay/chrome/app/chromeleon_strings.grdp
+new file mode 100644
+--- /dev/null
++++ b/chromium_src/overlay/chrome/app/chromeleon_strings.grdp
+@@ -0,0 +1,5 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<grit-part>
++  <message name="IDS_CONTENT_CONTEXT_OPENLINK_MULTI_SESSION" desc="Context menu item to open a link in multiple sessions.">
++    Open in Multiple Sessions...
++  </message>
++</grit-part>
+
 +++ b/chrome/browser/renderer_context_menu/render_view_context_menu.cc
 @@ -35,2 +35,4 @@
  #include "chrome/common/chrome_features.h"

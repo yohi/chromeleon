@@ -1,6 +1,6 @@
 # パッチ適用順序（上から順に適用される）
 # 各パッチは対応する Phase で実装を行う。
-# Phase 1 時点では全て空スタブ。
+# 各パッチは対応する Phase で実装を行う。
 #
 0002-blink-navigator-webdriver-hook.patch
 0003-blink-canvas-readback-hook.patch
