@@ -776,16 +776,16 @@ gh pr create --draft \
 ```text
 # patches/series
 # パッチ適用順序（上から順に適用される）
-# 各パッチは対応する Phase で実装を行う。
-# Phase 1 時点では全て空スタブ。
-#
-# 0001-content-storage-partition-hook.patch
-# 0002-blink-navigator-webdriver-hook.patch
-# 0003-blink-canvas-readback-hook.patch
-# 0004-blink-webgl-readpixels-hook.patch
-# 0005-chrome-render-view-context-menu-hook.patch
-# 0006-chrome-browser-view-grid-toggle-hook.patch
-# 0007-extensions-partition-load-hook.patch
+# Phase 1 時点では全てコメントアウト。
+# 0001 は廃止（CreateSessionForNewTab で自己完結するため不要）
+# 0002-blink-navigator-webdriver-hook.patch    # Phase 3 にて有効化
+# 0003-blink-canvas-readback-hook.patch         # Phase 3 にて有効化
+# 0004-blink-webgl-readpixels-hook.patch        # Phase 3 にて有効化
+# 0005-chrome-render-view-context-menu-hook.patch  # Phase 4 にて有効化
+# 0006-chrome-browser-view-grid-toggle-hook.patch   # Phase 5 にて有効化
+# 0007-extensions-partition-load-hook.patch     # Phase 6 にて有効化
+# 0008-chrome-tab-helpers-hook.patch            # Phase 3 にて有効化
+# 0009-chrome-profile-keyed-services-hook.patch # Phase 6 にて有効化
 ```
 
 > **注意:** Phase 1 時点では全パッチをコメントアウトしておく。各 Phase で実装するパッチのみコメントを解除する。
@@ -1613,13 +1613,16 @@ gh pr create --draft \
 
 ### Task 2-5: パッチ 0001 — StoragePartition フック
 
+> **廃止注記 (2026-05-22):** パッチ 0001 は実装時に不要と判断し削除した。
+> `EphemeralSessionManager::CreateSessionForNewTab()` が `profile_->GetStoragePartition(config, /*can_create=*/true)` を呼び出すことで自己完結するため、上流側へのフックは不要となった。設計書 §4.6 も併せて更新済み。
+
 **ブランチ:** `feature/phase2-task5__patch-0001` ← `feature/phase2-task4__unit-tests`
 **PR ターゲット:** `feature/phase-2__session-manager__base`
 
 **Files:**
 
-- Modify: `patches/0001-content-storage-partition-hook.patch`
-- Modify: `patches/series`
+- ~~Modify: `patches/0001-content-storage-partition-hook.patch`~~
+- ~~Modify: `patches/series`~~
 
 - [x] **Step 1: パッチ 0001 を実装する**
 
@@ -2186,6 +2189,61 @@ gh pr create --draft \
 - 0002: Navigator::webdriver() を定数 false に置換（~3行）
 - 0003: Canvas2D readback にノイズフック挿入（~8行）
 - 0004: WebGL readPixels にノイズフック挿入（~8行）"
+```
+
+---
+
+### Task 3-6: パッチ 0008 — tab_helpers フック（FingerprintSeedDelivery 接続）
+
+**ブランチ:** `feature/phase3-task6__patch-0008` ← `feature/phase3-task5__patches-0002-0004`
+**PR ターゲット:** `feature/phase-3__fingerprint-noise__base`
+
+> **追加背景:** `FingerprintSeedDelivery` は `WebContentsObserver` 実装であり、
+> 各タブの `WebContents` に attach されなければ `RenderFrameCreated` が呼ばれず、
+> Renderer への seed 配信が機能しない。`tab_helpers.cc` へのフックがその接続点となる。
+
+**Files:**
+
+- Modify: `patches/0008-chrome-tab-helpers-hook.patch`
+- Modify: `patches/series`
+
+- [x] **Step 1: パッチ 0008 を実装する（完了済み）**
+
+```diff
+# patches/0008-chrome-tab-helpers-hook.patch
+--- a/chrome/browser/ui/tab_helpers.cc
++++ b/chrome/browser/ui/tab_helpers.cc
+@@ -30,1 +30,2 @@
+ #include "chrome/browser/ui/tab_contents/core_tab_helper.h"
++#include "chromium_src/overlay/chrome/browser/multi_session/fingerprint_seed_delivery.h"
+@@ -120,2 +121,5 @@ void TabHelpers::AttachTabHelpers(content::WebContents* web_contents) {
+   CoreTabHelper::CreateForWebContents(web_contents);
++
++  // CHROMELEON_HOOK: Attach FingerprintSeedDelivery to handle seed passing.
++  multi_session::FingerprintSeedDelivery::CreateForWebContents(web_contents);
+ }
+```
+
+- [x] **Step 2: patches/series に 0008 が登録されていることを確認する**
+
+- [x] **Step 3: コミットする**
+
+```bash
+git add patches/
+git commit -m "feat(fingerprint): パッチ 0008 tab_helpers フックを追記（FingerprintSeedDelivery 接続）"
+```
+
+- [x] **Step 4: Draft PR を作成する**
+
+```bash
+git push -u origin feature/phase3-task6__patch-0008
+gh pr create --draft \
+  --base feature/phase-3__fingerprint-noise__base \
+  --title "feat(fingerprint): patch 0008 — tab_helpers FingerprintSeedDelivery hook" \
+  --body "## 概要
+- tab_helpers.cc に FingerprintSeedDelivery::CreateForWebContents を注入
+- 全タブの RenderFrame 生成時に seed 配信が機能するようになる
+- 設計書 §4.6 に 0008 を追記済み"
 ```
 
 ---
