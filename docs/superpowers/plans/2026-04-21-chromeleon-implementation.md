@@ -2207,7 +2207,7 @@ gh pr create --draft \
 - Create: `chromium_src/overlay/chrome/browser/ui/views/multi_session_dialog/multi_session_open_dialog.cc`
 - Modify: `chromium_src/overlay/chrome/browser/ui/views/multi_session_dialog/BUILD.gn`
 
-- [ ] **Step 1: ダイアログヘッダを作成する**
+- [x] **Step 1: ダイアログヘッダを作成する**
 
 ```cpp
 // .../multi_session_dialog/multi_session_open_dialog.h
@@ -2245,7 +2245,7 @@ class MultiSessionOpenDialog : public views::DialogDelegateView {
 #endif
 ```
 
-- [ ] **Step 2: ダイアログソースを作成する**
+- [x] **Step 2: ダイアログソースを作成する**
 
 ```cpp
 // .../multi_session_dialog/multi_session_open_dialog.cc
@@ -2310,14 +2310,14 @@ bool MultiSessionOpenDialog::Accept() {
 }  // namespace multi_session
 ```
 
-- [ ] **Step 3: BUILD.gn を更新しコミットする**
+- [x] **Step 3: BUILD.gn を更新しコミットする**
 
 ```bash
 git add chromium_src/overlay/chrome/browser/ui/views/multi_session_dialog/
 git commit -m "feat(dialog): MultiSessionOpenDialog Views を実装"
 ```
 
-- [ ] **Step 4: Draft PR を作成する**
+- [x] **Step 4: Draft PR を作成する**
 
 ```bash
 git push -u origin feature/phase4-task1__dialog-views

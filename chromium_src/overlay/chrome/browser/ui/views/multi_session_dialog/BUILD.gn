@@ -1,3 +1,15 @@
 source_set("multi_session_dialog") {
-  sources = []
+  sources = [
+    "multi_session_open_dialog.cc",
+    "multi_session_open_dialog.h",
+  ]
+
+  deps = [
+    "//base",
+    "//chrome/browser/ui",
+    "//chromium_src/overlay/chrome/browser/multi_session",
+    "//ui/gfx",
+    "//ui/views",
+    "//url",
+  ]
 }
